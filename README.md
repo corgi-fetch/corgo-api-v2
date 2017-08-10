@@ -7,8 +7,9 @@ GET: http://corgoapi-v2.azurewebsites.net/api/post
 
 GET: http://corgoapi-v2.azurewebsites.net/api/post/{post_id} 
 
-POST: http://corgoapi-v2.azurewebsites.net/api/post 
-'''
+POST: http://corgoapi-v2.azurewebsites.net/api/post
+
+'
 {
 	"date" : int,
 	"owner" : {
@@ -23,14 +24,15 @@ POST: http://corgoapi-v2.azurewebsites.net/api/post
 	"serviceGiven" : boolean,
 	"serviceReceived" : boolean
 }
-'''
+'
 
 GET: http://corgoapi-v2.azurewebsites.net/api/user 
 
 GET: http://corgoapi-v2.azurewebsites.net/api/user/{userid} 
 
-POST: http://corgoapi-v2.azurewebsites.net/api/user 
-'''
+POST: http://corgoapi-v2.azurewebsites.net/api/user
+
+'
 {
 	"rating" : int,
 	"name" : string,
@@ -43,5 +45,5 @@ POST: http://corgoapi-v2.azurewebsites.net/api/user
 	"creditCardNumber" : string,
 	"bankAccount" : string
 }
-'''
+'
 
