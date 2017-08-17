@@ -1,7 +1,6 @@
 package com.corgo.DTO;
 
 import java.util.List;
-import java.util.Set;
 
 public class UserDTO {
 	private String id;

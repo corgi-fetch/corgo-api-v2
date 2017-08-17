@@ -1,0 +1,16 @@
+C:\repos\api\src\main\java\com\corgo\controller\PostController.java
+C:\repos\api\src\main\java\com\corgo\DTO\UserDTO.java
+C:\repos\api\src\main\java\com\corgo\service\MongoDBUserService.java
+C:\repos\api\src\main\java\com\corgo\service\ServiceBase.java
+C:\repos\api\src\main\java\com\corgo\service\UserService.java
+C:\repos\api\src\main\java\com\corgo\repository\PostRepository.java
+C:\repos\api\src\main\java\com\corgo\repository\UserRepository.java
+C:\repos\api\src\main\java\com\corgo\service\MongoDBPostService.java
+C:\repos\api\src\main\java\com\corgo\App.java
+C:\repos\api\src\main\java\com\corgo\model\Post.java
+C:\repos\api\src\main\java\com\corgo\service\PostService.java
+C:\repos\api\src\main\java\com\corgo\model\User.java
+C:\repos\api\src\main\java\com\corgo\controller\UserController.java
+C:\repos\api\src\main\java\com\corgo\DTO\PostDTO.java
+C:\repos\api\src\main\java\com\corgo\DTO\UserStubDTO.java
+C:\repos\api\src\main\java\com\corgo\model\UserStub.java

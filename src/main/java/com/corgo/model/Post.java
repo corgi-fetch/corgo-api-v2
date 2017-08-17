@@ -95,8 +95,6 @@ public class Post {
 		private boolean serviceGiven = false;
 		private boolean serviceReceived = false;
 
-		private Builder() {}
-
 		public Builder(int date, User owner, String title, String description, double payment) {
 			this.date = date;
 			this.owner = owner;

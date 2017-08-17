@@ -1,6 +1,5 @@
 package com.corgo.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,18 +9,20 @@ import org.springframework.stereotype.Service;
 import com.corgo.DTO.*;
 import com.corgo.model.*;
 import com.corgo.repository.*;
-import static java.util.stream.Collectors.toList;
+import com.corgo.transformer.*;
 
 @Service
 public class MongoDBUserService implements UserService{
 	
-	private final PostRepository postRepository;
 	private final UserRepository userRepository;
+	private final UserTransformer userTransformer;
+	private final PostTransformer postTransformer;
 	
 	@Autowired
-    MongoDBUserService(PostRepository postRepository, UserRepository userRepository) {
-        this.postRepository = postRepository;
+    MongoDBUserService(UserRepository userRepository, UserTransformer userTransformer, PostTransformer postTransformer) {
         this.userRepository = userRepository;
+        this.userTransformer = userTransformer;
+        this.postTransformer = postTransformer;
     }
 	
 	@Override
@@ -31,34 +32,34 @@ public class MongoDBUserService implements UserService{
 		persisted.setName(user.getName());
 		persisted.setEmail(user.getEmail());
 		
-		persisted.setPostHistory(ConvertListOfPostDTOToPost(user.getPostHistory()));
-		persisted.setCurrentPost(ConvertListOfPostDTOToPost(user.getCurrentPosts()));
-		persisted.setCurrentJobs(ConvertListOfPostDTOToPost(user.getCurrentJobs()));
+		persisted.setPostHistory(postTransformer.ConvertListOfPostDTOToPost(user.getPostHistory()));
+		persisted.setCurrentPost(postTransformer.ConvertListOfPostDTOToPost(user.getCurrentPosts()));
+		persisted.setCurrentJobs(postTransformer.ConvertListOfPostDTOToPost(user.getCurrentJobs()));
 		
 		persisted.setCreditCardNumber(user.getCreditCardNumber());
 		persisted.setBankAccount(user.getBankAccount());
 		
 		persisted = userRepository.save(persisted);
-		return ConvertUserToUserDTO(persisted);
+		return userTransformer.ConvertUserToUserDTO(persisted);
 	}
 	
 	@Override 
 	public UserDTO delete(String id) {
 		User deleted = FindUserById(id);
 		userRepository.delete(deleted);
-		return ConvertUserToUserDTO(deleted);
+		return userTransformer.ConvertUserToUserDTO(deleted);
 	}
 	
 	@Override
 	public List<UserDTO> findAll() {
 		List<User> userEntries = userRepository.findAll();
-		return ConvertListOfUsersToUserDTO(userEntries);
+		return userTransformer.ConvertListOfUsersToUserDTO(userEntries);
 	}
 	
 	@Override
 	public UserDTO findById(String id) {
 		User found = FindUserById(id);
-		return ConvertUserToUserDTO(found);
+		return userTransformer.ConvertUserToUserDTO(found);
 	}
 	
 	@Override
@@ -69,89 +70,17 @@ public class MongoDBUserService implements UserService{
 		updated.setName(user.getName());
 		updated.setEmail(user.getEmail());
 		
-		updated.setPostHistory(ConvertListOfPostDTOToPost(user.getPostHistory()));
-		updated.setCurrentPost(ConvertListOfPostDTOToPost(user.getCurrentPosts()));
-		updated.setCurrentJobs(ConvertListOfPostDTOToPost(user.getCurrentJobs()));
+		updated.setPostHistory(postTransformer.ConvertListOfPostDTOToPost(user.getPostHistory()));
+		updated.setCurrentPost(postTransformer.ConvertListOfPostDTOToPost(user.getCurrentPosts()));
+		updated.setCurrentJobs(postTransformer.ConvertListOfPostDTOToPost(user.getCurrentJobs()));
 		
 		updated.setCreditCardNumber(user.getCreditCardNumber());
 		updated.setBankAccount(user.getBankAccount());
 		
 		updated.update(updated);
-		return ConvertUserToUserDTO(updated);
+		updated = userRepository.save(updated);
+		return userTransformer.ConvertUserToUserDTO(updated);
 	}
-	
-	
-	private Post ConvertPostDTOToPost(PostDTO postDTO) {
-		Optional<Post> toReturn = postRepository.findOne(postDTO.getId());
-		//TODO: IMPLEMENT EXCEPTION AND ERROR HANDLING
-		return toReturn.get();
-	}
-	
-	private List<Post> ConvertListOfPostDTOToPost(List<PostDTO> listPostDTO) {
-		if (listPostDTO == null || listPostDTO.size() == 0) {
-			return new ArrayList<Post>();
-		} else {
-			return listPostDTO.stream()
-					.map(this::ConvertPostDTOToPost)
-					.collect(toList());
-		}
-	}
-	
-	private UserDTO ConvertUserToUserDTO(User model) {
-		UserDTO userDTO = new UserDTO();
-		
-		userDTO.setId(model.getId());
-		
-		userDTO.setRating(model.getRating());
-		userDTO.setName(model.getName());
-		userDTO.setEmail(model.getEmail());
-		
-		userDTO.setPostHistory(ConvertListOfPostsToPostDTO(model.getPostHistory()));
-		userDTO.setCurrentPosts(ConvertListOfPostsToPostDTO(model.getCurrentPost()));
-		userDTO.setCurrentJobs(ConvertListOfPostsToPostDTO(model.getCurrentJobs()));
-		
-		userDTO.setCreditCardNumber(model.getCreditCardNumber());
-		userDTO.setBankAccount(model.getBankAccount());
-		
-		
-		return userDTO;
-	}
-	
-	private List<PostDTO> ConvertListOfPostsToPostDTO(List<Post> listPost) {
-		return listPost.stream()
-				.map(this::ConvertPostToPostDTO)
-				.collect(toList());
-	}
-	
-	private UserStubDTO ConvertUserToUserStubDTO(User model)
-	{
-		UserStubDTO dto = new UserStubDTO();
-		dto.setId(model.getId());
-		dto.setName(model.getName());
-		dto.setRating(model.getRating());
-		return dto;
-	}
-	
-	private List<UserDTO> ConvertListOfUsersToUserDTO(List<User> listUser) {
-		return listUser.stream()
-				.map(this::ConvertUserToUserDTO)
-				.collect(toList());
-	}
-	
-	private PostDTO ConvertPostToPostDTO(Post model) {
-        PostDTO dto = new PostDTO();
- 
-        dto.setId(model.getId());
-        
-        dto.setDate(model.getDate());
-        dto.setOwner(ConvertUserToUserStubDTO(model.getOwner()));
-        dto.setTitle(model.getTitle());
-        dto.setDescription(model.getDescription());
-        dto.setPayment(model.getPayment());
-        dto.setServiceGiven(model.getServiceGiven());
-        dto.setServiceReceived(model.getServiceReceived());
-        return dto;
-    }
 	
 	private User FindUserById(String id) {
 		Optional<User> result = userRepository.findOne(id);
