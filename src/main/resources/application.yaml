@@ -1,0 +1,40 @@
+google:
+    accessTokenUri: https://www.googleapis.com/oauth2/v3/token
+    clientId: 361434326191-ks2vgbji0b9qntp47h2d19ia1in186s3.apps.googleusercontent.com
+    clientSecret: qq57rkrsRd5QFqzWTnyducW2
+    redirectUri: google.com
+    userAuthorizationUri: https://accounts.google.com/o/oauth2/auth
+facebook:
+    client:
+      clientId: 277175236105666
+      clientSecret: 9aac61d03378000d8b90e1fb617421ee
+      accessTokenUri: https://graph.facebook.com/oauth/access_token
+      userAuthorizationUri: https://www.facebook.com/dialog/oauth
+      tokenName: oauth_token
+      authenticationScheme: query
+      clientAuthenticationScheme: form
+    resource:
+      userInfoUri: https://graph.facebook.com/me
+github:
+    client:
+      clientId: c78910a5280f2ec07b5d
+      clientSecret: 3ce9cdf1eca399b67724540f5015cb8bc49b0535
+      accessTokenUri: https://github.com/login/oauth/access_token
+      userAuthorizationUri: https://github.com/login/oauth/authorize
+      clientAuthenticationScheme: form
+    resource:
+      userInfoUri: https://api.github.com/user
+spring:
+    data:
+      mongodb:
+        uri: mongodb://adminacct:Dannyz123@cluster0-shard-00-00-h23s6.mongodb.net:27017,cluster0-shard-00-01-h23s6.mongodb.net:27017,cluster0-shard-00-02-h23s6.mongodb.net:27017/Test00?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin
+security:
+  oauth2:
+    client:
+      client-id: corgo
+      client-secret: corgosecret
+      scope: read,write
+      auto-approve-scopes: '.*'
+    
+
+      

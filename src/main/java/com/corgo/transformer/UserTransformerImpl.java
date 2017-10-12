@@ -35,6 +35,8 @@ final class UserTransformerImpl implements UserTransformer {
 		userDTO.setName(model.getName());
 		userDTO.setEmail(model.getEmail());
 		
+		userDTO.setUserId(model.getUserId());
+		
 		userDTO.setPostHistory(postTransformer.ConvertListOfPostsToPostDTO(model.getPostHistory()));
 		userDTO.setCurrentPosts(postTransformer.ConvertListOfPostsToPostDTO(model.getCurrentPost()));
 		userDTO.setCurrentJobs(postTransformer.ConvertListOfPostsToPostDTO(model.getCurrentJobs()));
@@ -55,15 +57,23 @@ final class UserTransformerImpl implements UserTransformer {
 	public UserStubDTO ConvertUserToUserStubDTO(User model)
 	{
 		UserStubDTO dto = new UserStubDTO();
-		dto.setId(model.getId());
+		dto.setUserId(model.getUserId());
 		dto.setName(model.getName());
 		dto.setRating(model.getRating());
 		return dto;
 	}
 	
+	public UserStubDTO ConvertUserDTOToUserStubDTO(UserDTO userDTO) {
+		UserStubDTO dto = new UserStubDTO();
+		dto.setUserId(userDTO.getUserId());
+		dto.setName(userDTO.getName());
+		dto.setRating(userDTO.getRating());
+		return dto;
+	}
+	
 	public User ConvertUserStubDTOToUser(UserStubDTO userStubDTO)
 	{
-		Optional<User> toReturn = userRepository.findOne(userStubDTO.getId());
+		Optional<User> toReturn = userRepository.findByUserId(userStubDTO.getUserId());
 		//TODO: IMPLEMENT EXCEPTION AND ERROR HANDLING
 		return toReturn.get();
 	}

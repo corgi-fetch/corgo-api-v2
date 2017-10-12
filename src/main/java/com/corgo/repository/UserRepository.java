@@ -13,6 +13,7 @@ public interface UserRepository extends Repository<User, String> {
     List<User> findAll();
     Optional<User> findOne(String id);
     User save(User saved);
+    Optional<User> findByUserId(String userId);
 
 
 }

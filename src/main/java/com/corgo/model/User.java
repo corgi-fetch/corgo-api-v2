@@ -12,6 +12,8 @@ public class User {
     private String name;
     private String email;
     
+    private String userId;
+    
     private List<Post> postHistory;
     private List<Post> currentPosts;
     private List<Post> currentJobs;
@@ -24,6 +26,8 @@ public class User {
     }
     
     public void update(User user) {
+    	this.userId = user.userId;
+    	
     	this.rating = user.rating;
     	this.name = user.name;
     	this.email = user.email;
@@ -34,6 +38,14 @@ public class User {
     	
     	this.creditCardNumber = user.creditCardNumber;
     	this.bankAccount = user.bankAccount;
+    }
+    
+    public String getUserId() {
+    	return userId;
+    }
+    
+    public void setUserId(String _userId) {
+    	userId = _userId;
     }
     
     public String getId() {

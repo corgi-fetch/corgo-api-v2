@@ -4,6 +4,8 @@ import java.util.List;
 
 public class UserDTO {
 	private String id;
+	private String userId;
+	
     private int rating;
     private String name;
     private String email;
@@ -22,6 +24,15 @@ public class UserDTO {
 	public void setId(String id) {
 		this.id = id;
 	}
+	
+	public String getUserId() {
+    	return userId;
+    }
+    
+    public void setUserId(String _userId) {
+    	this.userId = _userId;
+    }
+	
 	public int getRating() {
 		return rating;
 	}

@@ -8,5 +8,6 @@ public interface UserService {
     UserDTO delete(String id);
     List<UserDTO> findAll();
     UserDTO findById(String id);
+    UserDTO findByUserId(String userId);
     UserDTO update(UserDTO user);
 }

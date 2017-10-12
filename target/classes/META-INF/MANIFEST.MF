@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Implementation-Title: api
 Implementation-Version: 0.0.1-SNAPSHOT
-Built-By: danie_000
+Built-By: danie
 Implementation-Vendor-Id: com.corgo
 Build-Jdk: 1.8.0_144
 Implementation-URL: http://maven.apache.org

@@ -13,4 +13,5 @@ public interface UserTransformer {
 	
 	public UserDTO ConvertUserToUserDTO(User model);
 	public List<UserDTO> ConvertListOfUsersToUserDTO(List<User> listUser);
+	public UserStubDTO ConvertUserDTOToUserStubDTO(UserDTO userDTO);
 }

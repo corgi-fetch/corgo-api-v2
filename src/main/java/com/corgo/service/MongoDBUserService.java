@@ -31,6 +31,7 @@ public class MongoDBUserService implements UserService{
 		persisted.setRating(user.getRating());
 		persisted.setName(user.getName());
 		persisted.setEmail(user.getEmail());
+		persisted.setUserId(user.getUserId());
 		
 		persisted.setPostHistory(postTransformer.ConvertListOfPostDTOToPost(user.getPostHistory()));
 		persisted.setCurrentPost(postTransformer.ConvertListOfPostDTOToPost(user.getCurrentPosts()));
@@ -60,6 +61,13 @@ public class MongoDBUserService implements UserService{
 	public UserDTO findById(String id) {
 		User found = FindUserById(id);
 		return userTransformer.ConvertUserToUserDTO(found);
+	}
+	
+	public UserDTO findByUserId(String userId) {
+		Optional<User> result = userRepository.findByUserId(userId);
+		//TODO: IMPLEMENT EXCEPTION AND ERROR HANDLING
+		return userTransformer.ConvertUserToUserDTO(result.get());
+		
 	}
 	
 	@Override

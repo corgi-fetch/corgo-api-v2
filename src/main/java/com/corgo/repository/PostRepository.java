@@ -12,5 +12,4 @@ public interface PostRepository extends Repository<Post, String> {
     List<Post> findAll();
     Optional<Post> findOne(String id);
     Post save(Post saved);
-
 }
