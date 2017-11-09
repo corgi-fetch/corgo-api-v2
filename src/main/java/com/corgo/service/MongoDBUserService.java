@@ -17,12 +17,14 @@ public class MongoDBUserService implements UserService{
 	private final UserRepository userRepository;
 	private final UserTransformer userTransformer;
 	private final PostTransformer postTransformer;
+	private final GroupTransformer groupTransformer;
 	
 	@Autowired
-    MongoDBUserService(UserRepository userRepository, UserTransformer userTransformer, PostTransformer postTransformer) {
+    MongoDBUserService(UserRepository userRepository, UserTransformer userTransformer, PostTransformer postTransformer, GroupTransformer groupTransformer) {
         this.userRepository = userRepository;
         this.userTransformer = userTransformer;
         this.postTransformer = postTransformer;
+        this.groupTransformer = groupTransformer;
     }
 	
 	@Override
@@ -39,6 +41,8 @@ public class MongoDBUserService implements UserService{
 		
 		persisted.setCreditCardNumber(user.getCreditCardNumber());
 		persisted.setBankAccount(user.getBankAccount());
+		
+		persisted.setGroups(groupTransformer.ConvertListOfGroupDTOToGroup(user.getGroups()));
 		
 		persisted = userRepository.save(persisted);
 		return userTransformer.ConvertUserToUserDTO(persisted);

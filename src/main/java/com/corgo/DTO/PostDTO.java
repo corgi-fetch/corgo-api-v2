@@ -12,9 +12,19 @@ public class PostDTO {
 	private String description;
 	private double payment;
 	
+	private String groupId;
+	
 	private List<UserStubDTO> interestedQueue;
 	private boolean serviceGiven;
 	private boolean serviceReceived;
+	
+	public String getGroupId() {
+		return groupId;
+	}
+	
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
+	}
 	
 	public String getId() {
 		return id;

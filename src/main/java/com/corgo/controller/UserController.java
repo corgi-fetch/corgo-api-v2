@@ -41,12 +41,12 @@ public class UserController {
 	
 	@RequestMapping(method = RequestMethod.GET)
 	UserDTO findByUserId(@PathVariable("userId") String userId, @ModelAttribute Principal principal) {
-		System.out.println("we here");
-		System.out.println(userId);
-		System.out.println(principal.getName());
-		if (!userId.equals(principal.getName().toString())) {
-			return null;
-		}
+//		System.out.println("we here");
+//		System.out.println(userId);
+//		System.out.println(principal.getName());
+//		if (!userId.equals(principal.getName().toString())) {
+//			return null;
+//		}
 		
 		return service.findByUserId(userId);
 	}

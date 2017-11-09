@@ -20,6 +20,8 @@ public class User {
     
     private String creditCardNumber;
     private String bankAccount;
+    
+    private List<Group> groups;
 
     public User() {
 
@@ -50,6 +52,14 @@ public class User {
     
     public String getId() {
     	return id;
+    }
+        
+    public void setGroups(List<Group> _groups) {
+    	groups = _groups;
+    }
+
+    public List<Group> getGroups() {
+    	return groups;
     }
 
     public void setRating(int _rating) {

@@ -46,13 +46,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
       http
         .antMatcher("/**")
+        .csrf().disable()
         .authorizeRequests()
           .antMatchers("/", "/login**", "/webjars/**")
           .permitAll()
         .anyRequest()
           .authenticated()
           .and().logout().logoutSuccessUrl("/").permitAll()
-          .and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+          //.and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+          
           .and().addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class);
     }
 	

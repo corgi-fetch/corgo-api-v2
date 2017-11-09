@@ -2,6 +2,8 @@ package com.corgo.DTO;
 
 import java.util.List;
 
+import com.corgo.model.Group;
+
 public class UserDTO {
 	private String id;
 	private String userId;
@@ -18,6 +20,8 @@ public class UserDTO {
     private String creditCardNumber;
     private String bankAccount;
     
+    private List<GroupDTO> groups;
+    
 	public String getId() {
 		return id;
 	}
@@ -31,6 +35,14 @@ public class UserDTO {
     
     public void setUserId(String _userId) {
     	this.userId = _userId;
+    }
+    
+    public void setGroups(List<GroupDTO> _groups) {
+    	groups = _groups;
+    }
+
+    public List<GroupDTO> getGroups() {
+    	return groups;
     }
 	
 	public int getRating() {

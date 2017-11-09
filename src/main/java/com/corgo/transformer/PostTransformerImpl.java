@@ -59,6 +59,7 @@ final class PostTransformerImpl implements PostTransformer{
         dto.setPayment(model.getPayment());
         dto.setServiceGiven(model.getServiceGiven());
         dto.setServiceReceived(model.getServiceReceived());
+        dto.setGroupId(model.getGroupId());
         return dto;
     }
 	

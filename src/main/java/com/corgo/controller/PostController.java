@@ -18,6 +18,7 @@ import java.security.Principal;
 import java.util.List;
 
 import com.corgo.service.*;
+import com.corgo.transformer.UserTransformer;
 import com.corgo.DTO.*;
 
 @RestController
@@ -26,35 +27,25 @@ public class PostController {
 	
 	private final PostService postService;
 	private final UserService userService;
+	private final UserTransformer userTransformer;
 	
 	@Autowired
-	PostController (PostService postService, UserService userService) {
+	PostController (PostService postService, UserService userService, UserTransformer userTransformer) {
 		this.postService = postService;
 		this.userService = userService;
+		this.userTransformer = userTransformer;
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
 	PostDTO create(@PathVariable("userId") String userId, @RequestBody @Valid PostDTO postEntry) {
-		PostDTO created = postService.create(postEntry);
-		List<PostDTO> userPosts = userService.findByUserId(userId).getCurrentPosts();
-		userPosts.add(created);
-		UserDTO currentUser = userService.findByUserId(userId);
-		currentUser.setCurrentPosts(userPosts);
-		userService.update(currentUser);
+		PostDTO created = postService.create(postEntry);		
 		return created;
 	}
 	
 	@RequestMapping(value="{id}", method = RequestMethod.DELETE)
 	@ResponseBody
 	PostDTO delete(@PathVariable("userId") String userId, @PathVariable("id") String id) {
-		if (postService.findById(id).isServiceGiven() && postService.findById(id).isServiceReceived()) {
-			return null;
-		} else {
-			PostDTO toDelete = postService.findById(id);
-			List<PostDTO> userPosts = userService.findByUserId(userId).getPostHistory();
-			userPosts.remove(postService.findById(id));
-		}
 		return postService.delete(id);
 	}
 	
@@ -72,6 +63,17 @@ public class PostController {
 	@RequestMapping(value = "{id}", method = RequestMethod.PUT)
 	PostDTO update(@PathVariable("userId") String userId, @RequestBody @Valid PostDTO postEntry) {
 		return postService.update(postEntry);
+	}
+	
+	@RequestMapping(method = RequestMethod.PUT)
+	PostDTO updateInterestedQueue(@PathVariable("userId") String userId, @PathVariable("id") String id, @RequestBody @Valid UserDTO interestedUser) {
+		PostDTO post = postService.findById(id);
+		List<UserStubDTO> interestedQueue = post.getInterestedQueue();
+		UserStubDTO stub = userTransformer.ConvertUserDTOToUserStubDTO(interestedUser);
+		interestedQueue.add(stub);
+		post.setInterestedQueue(interestedQueue);
+		
+		return postService.update(post);
 	}
 	
 	

@@ -13,6 +13,8 @@ public class Post {
 	private String description;
 	private double payment;
 	
+	private String groupId;
+	
 	private List<User> interestedQueue;
 	private boolean serviceGiven;
 	private boolean serviceReceived;
@@ -31,8 +33,8 @@ public class Post {
 	
 	public Post() {}
 
-	public static Builder getBuilder(int _date, User _owner, String _title, String _description, double _payment) {
-		return new Builder(_date, _owner, _title, _description, _payment);
+	public static Builder getBuilder(int _date, User _owner, String _title, String _description, double _payment, String _groupId) {
+		return new Builder(_date, _owner, _title, _description, _payment, _groupId);
 	}
 	
 	public String getId() {
@@ -70,6 +72,10 @@ public class Post {
 	public boolean getServiceReceived() {
 		return this.serviceReceived;
 	}
+	
+	public String getGroupId() {
+		return this.groupId;
+	}
 
 	public void update(Builder builder) {
 		this.date = builder.date;
@@ -81,6 +87,8 @@ public class Post {
 		this.interestedQueue = builder.interestedQueue;
 		this.serviceGiven = builder.serviceGiven;
 		this.serviceReceived = builder.serviceReceived;
+		
+		this.groupId = builder.groupId;
 	}
 
 	public static class Builder {
@@ -91,16 +99,19 @@ public class Post {
 		private String description;
 		private double payment;
 		
+		private String groupId;
+		
 		private List<User> interestedQueue;
 		private boolean serviceGiven = false;
 		private boolean serviceReceived = false;
 
-		public Builder(int date, User owner, String title, String description, double payment) {
+		public Builder(int date, User owner, String title, String description, double payment, String groupId) {
 			this.date = date;
 			this.owner = owner;
 			this.title = title;
 			this.description = description;
 			this.payment = payment;
+			this.groupId = groupId;
 		}
 
 		public Builder interestedQueue(List<User> _interestedQueue) 

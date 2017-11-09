@@ -19,10 +19,12 @@ final class UserTransformerImpl implements UserTransformer {
 	
 	private final PostTransformer postTransformer;
 	private final UserRepository userRepository;
+	private final GroupTransformer groupTransformer;
 	
 	@Autowired
-	UserTransformerImpl(@Lazy PostTransformer postTransformer, UserRepository userRepository) {
+	UserTransformerImpl(@Lazy PostTransformer postTransformer, UserRepository userRepository, GroupTransformer groupTransformer) {
 		this.postTransformer = postTransformer;
+		this.groupTransformer = groupTransformer;
 		this.userRepository = userRepository;
 	}
 
@@ -43,6 +45,8 @@ final class UserTransformerImpl implements UserTransformer {
 		
 		userDTO.setCreditCardNumber(model.getCreditCardNumber());
 		userDTO.setBankAccount(model.getBankAccount());
+		
+		userDTO.setGroups(groupTransformer.ConvertListOfGroupToGroupDTO(model.getGroups()));
 		
 		
 		return userDTO;
