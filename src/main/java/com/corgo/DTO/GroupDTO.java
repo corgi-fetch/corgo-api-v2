@@ -12,14 +12,25 @@ public class GroupDTO {
 	private String id;
 	
 	private String name;
-	private List<User> users;
-	private List<Post> posts;
+	private List<UserDTO> users;
+	private List<PostDTO> posts;
+	List<String> invited;
 	
 	private String description;
 	
 	public String getId() {
 		return id;
 	}
+	
+	public List<String> getInvited() {
+		return invited;
+	}
+
+	public void setInvited(List<String> invited) {
+		this.invited = invited;
+	}
+	
+	
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -29,16 +40,16 @@ public class GroupDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public List<User> getUsers() {
+	public List<UserDTO> getUsers() {
 		return users;
 	}
-	public void setUsers(List<User> users) {
+	public void setUsers(List<UserDTO> users) {
 		this.users = users;
 	}
-	public List<Post> getPosts() {
+	public List<PostDTO> getPosts() {
 		return posts;
 	}
-	public void setPosts(List<Post> posts) {
+	public void setPosts(List<PostDTO> posts) {
 		this.posts = posts;
 	}
 	

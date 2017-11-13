@@ -60,8 +60,9 @@ final class MongoDBPostService implements PostService{
 		
 		//Updating GroupRepository
 		GroupDTO group = groupService.findById(post.getGroupId());
-		List<Post> currentPosts = group.getPosts();
-		currentPosts.add(persisted);
+		List<PostDTO> currentPosts = group.getPosts();
+		currentPosts.add(post);
+		groupService.update(group);
 		
 		return postTransformer.ConvertPostToPostDTO(persisted);
 	}

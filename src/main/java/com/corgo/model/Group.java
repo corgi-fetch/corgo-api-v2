@@ -12,6 +12,7 @@ public class Group {
 	private String description;
 	private List<User> users;
 	private List<Post> posts;
+	private List<String> invited;
 	
 	@Override
 	public String toString() {
@@ -24,6 +25,14 @@ public class Group {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+	
+	public List<String> getInvited() {
+		return invited;
+	}
+
+	public void setInvited(List<String> invited) {
+		this.invited = invited;
 	}
 	
 	public String getDescription() {

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.corgo.DTO.*;
@@ -20,7 +21,7 @@ public class MongoDBUserService implements UserService{
 	private final GroupTransformer groupTransformer;
 	
 	@Autowired
-    MongoDBUserService(UserRepository userRepository, UserTransformer userTransformer, PostTransformer postTransformer, GroupTransformer groupTransformer) {
+    MongoDBUserService(@Lazy UserRepository userRepository, @Lazy UserTransformer userTransformer, PostTransformer postTransformer, GroupTransformer groupTransformer) {
         this.userRepository = userRepository;
         this.userTransformer = userTransformer;
         this.postTransformer = postTransformer;
@@ -49,8 +50,8 @@ public class MongoDBUserService implements UserService{
 	}
 	
 	@Override 
-	public UserDTO delete(String id) {
-		User deleted = FindUserById(id);
+	public UserDTO delete(String userId) {
+		User deleted = FindUserById(userId);
 		userRepository.delete(deleted);
 		return userTransformer.ConvertUserToUserDTO(deleted);
 	}
@@ -62,8 +63,8 @@ public class MongoDBUserService implements UserService{
 	}
 	
 	@Override
-	public UserDTO findById(String id) {
-		User found = FindUserById(id);
+	public UserDTO findById(String userId) {
+		User found = FindUserById(userId);
 		return userTransformer.ConvertUserToUserDTO(found);
 	}
 	
@@ -77,7 +78,9 @@ public class MongoDBUserService implements UserService{
 	@Override
 	public UserDTO update(UserDTO user) {
 		User updated = FindUserById(user.getId());
-
+		
+		updated.setUserId(user.getUserId());
+		
 		updated.setRating(user.getRating());
 		updated.setName(user.getName());
 		updated.setEmail(user.getEmail());
@@ -94,8 +97,8 @@ public class MongoDBUserService implements UserService{
 		return userTransformer.ConvertUserToUserDTO(updated);
 	}
 	
-	private User FindUserById(String id) {
-		Optional<User> result = userRepository.findOne(id);
+	private User FindUserById(String userId) {
+		Optional<User> result = userRepository.findByUserId(userId);
 		//TODO: IMPLEMENT EXCEPTION AND ERROR HANDLING
 		return result.get();
 	}

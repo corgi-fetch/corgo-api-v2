@@ -1,6 +1,7 @@
 package com.corgo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -30,7 +31,7 @@ public class PostController {
 	private final UserTransformer userTransformer;
 	
 	@Autowired
-	PostController (PostService postService, UserService userService, UserTransformer userTransformer) {
+	PostController (@Lazy PostService postService, UserService userService, UserTransformer userTransformer) {
 		this.postService = postService;
 		this.userService = userService;
 		this.userTransformer = userTransformer;
@@ -66,7 +67,7 @@ public class PostController {
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT)
-	PostDTO updateInterestedQueue(@PathVariable("userId") String userId, @PathVariable("id") String id, @RequestBody @Valid UserDTO interestedUser) {
+	PostDTO addInterestedQueue(@PathVariable("userId") String userId, @PathVariable("id") String id, @RequestBody @Valid UserDTO interestedUser) {
 		PostDTO post = postService.findById(id);
 		List<UserStubDTO> interestedQueue = post.getInterestedQueue();
 		UserStubDTO stub = userTransformer.ConvertUserDTOToUserStubDTO(interestedUser);

@@ -13,6 +13,7 @@ import com.corgo.DTO.UserDTO;
 import com.corgo.DTO.UserStubDTO;
 import com.corgo.model.User;
 import com.corgo.repository.UserRepository;
+import com.corgo.service.UserService;
 
 @Component
 final class UserTransformerImpl implements UserTransformer {
@@ -20,12 +21,14 @@ final class UserTransformerImpl implements UserTransformer {
 	private final PostTransformer postTransformer;
 	private final UserRepository userRepository;
 	private final GroupTransformer groupTransformer;
+	private final UserService userService;
 	
 	@Autowired
-	UserTransformerImpl(@Lazy PostTransformer postTransformer, UserRepository userRepository, GroupTransformer groupTransformer) {
+	UserTransformerImpl(@Lazy PostTransformer postTransformer, UserRepository userRepository, GroupTransformer groupTransformer, UserService userService) {
 		this.postTransformer = postTransformer;
 		this.groupTransformer = groupTransformer;
 		this.userRepository = userRepository;
+		this.userService = userService;
 	}
 
 	public UserDTO ConvertUserToUserDTO(User model) {
@@ -87,6 +90,20 @@ final class UserTransformerImpl implements UserTransformer {
 		return listUserStubDTO.stream()
 				.map(this::ConvertUserStubDTOToUser)
 				.collect(toList());
+	}
+
+	@Override
+	public List<User> ConvertListOfUserDTOToUser(List<UserDTO> listUserDTO) {
+		// TODO Auto-generated method stub
+		return listUserDTO.stream()
+				.map(this::ConvertUserDTOToUser)
+				.collect(toList());
+	}
+
+	@Override
+	public User ConvertUserDTOToUser(UserDTO userDTO) {
+		// TODO Auto-generated method stub
+		return userRepository.findByUserId(userDTO.getUserId()).get();
 	}
 
 }

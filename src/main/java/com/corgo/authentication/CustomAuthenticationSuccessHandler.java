@@ -60,12 +60,12 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 			if (service.findByUserId(authentication.getName()) != null) {
 				System.out.println("we already have an account!");
 				System.out.println(userProfile.getId());
-				redirectStrategy.sendRedirect(request, response, "/api/" + authentication.getName() + "/post");
+				//redirectStrategy.sendRedirect(request, response, "/api/" + authentication.getName() + "/post");
 			}
 		} catch(NoSuchElementException e) {
 			System.out.println("no user found");
 			System.out.println("new user!");
-			redirectStrategy.sendRedirect(request, response, targetUrl + "?userId=" + authentication.getName() + "&firstName=" + userProfile.getFirstName() + "&lastName=" + userProfile.getLastName() + "&email=" + userProfile.getEmail());
+			//redirectStrategy.sendRedirect(request, response, targetUrl + "?userId=" + authentication.getName() + "&firstName=" + userProfile.getFirstName() + "&lastName=" + userProfile.getLastName() + "&email=" + userProfile.getEmail());
 			
 		}
 
