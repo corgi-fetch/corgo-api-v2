@@ -44,7 +44,8 @@ final class MongoDBPostService implements PostService{
 				post.getTitle(), 
 				post.getDescription(), 
 				post.getPayment(),
-				post.getGroupId())
+				post.getGroupId(),
+				post.getState())
 				.interestedQueue(userTransformer.ConvertListOfUserStubDTOToUser(post.getInterestedQueue()))
 				.serviceGiven(post.isServiceGiven())
 				.serviceReceived(post.isServiceReceived()).build();
@@ -110,7 +111,8 @@ final class MongoDBPostService implements PostService{
 				post.getTitle(), 
 				post.getDescription(), 
 				post.getPayment(),
-				post.getGroupId())
+				post.getGroupId(),
+				post.getState())
 				.interestedQueue(userTransformer.ConvertListOfUserStubDTOToUser(post.getInterestedQueue()))
 				.serviceGiven(post.isServiceGiven())
 				.serviceReceived(post.isServiceReceived()));

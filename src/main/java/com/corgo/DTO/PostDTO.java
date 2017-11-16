@@ -18,7 +18,15 @@ public class PostDTO {
 	private boolean serviceGiven;
 	private boolean serviceReceived;
 	
-	//private String state;
+	private String state;
+	
+	public String getState() {
+		return state;
+	}
+	
+	public void setState(String state) {
+		this.state = state;
+	}
 	
 	public String getGroupId() {
 		return groupId;
