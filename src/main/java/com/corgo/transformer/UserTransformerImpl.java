@@ -61,6 +61,12 @@ final class UserTransformerImpl implements UserTransformer {
 				.collect(toList());
 	}
 	
+	public List<UserStubDTO> ConvertListOfUsersToUserStubDTO(List<User> listUser) {
+		return listUser.stream()
+				.map(this::ConvertUserToUserStubDTO)
+				.collect(toList());
+	}
+	
 	public UserStubDTO ConvertUserToUserStubDTO(User model)
 	{
 		UserStubDTO dto = new UserStubDTO();

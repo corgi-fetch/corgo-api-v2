@@ -44,7 +44,7 @@ public class MasterUserController {
 	
 	@RequestMapping(value= "{id}", method = RequestMethod.GET)
 	UserDTO findById(@PathVariable("id") String id) {
-		return service.findById(id);
+		return service.findByUserId(id);
 	}
 
 	@RequestMapping(value = "{id}", method = RequestMethod.PUT)

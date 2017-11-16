@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.corgo.service.*;
@@ -40,6 +41,7 @@ public class PostController {
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
 	PostDTO create(@PathVariable("userId") String userId, @RequestBody @Valid PostDTO postEntry) {
+		System.out.println("POST create");
 		PostDTO created = postService.create(postEntry);		
 		return created;
 	}
@@ -61,19 +63,26 @@ public class PostController {
 		return postService.findAll();
 	}
 	
-	@RequestMapping(value = "{id}", method = RequestMethod.PUT)
-	PostDTO update(@PathVariable("userId") String userId, @RequestBody @Valid PostDTO postEntry) {
-		return postService.update(postEntry);
-	}
+//	@RequestMapping(value = "{id}", method = RequestMethod.PUT)
+//	PostDTO update(@PathVariable("userId") String userId, @PathVariable("id") String id, @RequestBody @Valid PostDTO postEntry) {
+//		System.out.println("we r here update");
+//		return postService.update(postEntry);
+//	}
 	
-	@RequestMapping(method = RequestMethod.PUT)
+	@RequestMapping(value = "{id}", method = RequestMethod.PUT)
 	PostDTO addInterestedQueue(@PathVariable("userId") String userId, @PathVariable("id") String id, @RequestBody @Valid UserDTO interestedUser) {
+		System.out.println("we r here");
 		PostDTO post = postService.findById(id);
 		List<UserStubDTO> interestedQueue = post.getInterestedQueue();
+		System.out.println(interestedQueue);
+		if(interestedQueue == null) {
+			System.out.println("inside null check");
+			interestedQueue = new ArrayList<>();
+		}
 		UserStubDTO stub = userTransformer.ConvertUserDTOToUserStubDTO(interestedUser);
 		interestedQueue.add(stub);
 		post.setInterestedQueue(interestedQueue);
-		
+		System.out.println(post.getInterestedQueue().size());
 		return postService.update(post);
 	}
 	

@@ -96,6 +96,7 @@ final class MongoDBPostService implements PostService{
 	public PostDTO findById(String id) {
 		// TODO Auto-generated method stub
 		Post found = FindPostById(id);
+		System.out.println("this is in findById " + found.getInterestedQueue().size());
 		return postTransformer.ConvertPostToPostDTO(found);
 	}
 
@@ -113,7 +114,12 @@ final class MongoDBPostService implements PostService{
 				.interestedQueue(userTransformer.ConvertListOfUserStubDTOToUser(post.getInterestedQueue()))
 				.serviceGiven(post.isServiceGiven())
 				.serviceReceived(post.isServiceReceived()));
+		System.out.println(updated.getInterestedQueue().get(0).getName());
 		updated = postRepository.save(updated);
+		System.out.println(updated.getInterestedQueue().get(0).getName());
+		System.out.println((postRepository.findOne(updated.getId())).get().getInterestedQueue().size());
+		PostDTO dto = postTransformer.ConvertPostToPostDTO(updated);
+		System.out.println("dto " + dto.getInterestedQueue().size());
 		return postTransformer.ConvertPostToPostDTO(updated);
 	}
 

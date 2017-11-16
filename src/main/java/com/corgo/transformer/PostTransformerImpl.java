@@ -50,7 +50,9 @@ final class PostTransformerImpl implements PostTransformer{
 	
 	public PostDTO ConvertPostToPostDTO(Post model) {
         PostDTO dto = new PostDTO();
- 
+        dto.setInterestedQueue(userTransformer.ConvertListOfUsersToUserStubDTO(model.getInterestedQueue()));
+        if(dto.getInterestedQueue().size() != 0)
+        		System.out.println("this is in the convert" + dto.getInterestedQueue().get(0).getName());
         dto.setId(model.getId());
         dto.setDate(model.getDate());
         dto.setOwner(userTransformer.ConvertUserToUserStubDTO(model.getOwner()));
