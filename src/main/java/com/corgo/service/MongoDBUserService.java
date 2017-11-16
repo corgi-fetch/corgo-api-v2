@@ -71,6 +71,7 @@ public class MongoDBUserService implements UserService{
 	public UserDTO findByUserId(String userId) {
 		Optional<User> result = userRepository.findByUserId(userId);
 		//TODO: IMPLEMENT EXCEPTION AND ERROR HANDLING
+		System.out.println(FindUserById(userId));
 		return userTransformer.ConvertUserToUserDTO(result.get());
 		
 	}

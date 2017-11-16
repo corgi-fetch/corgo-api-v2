@@ -40,34 +40,33 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 	                                    Authentication authentication) throws IOException, ServletException {
-	    //implementation
-		//System.out.println(request);
-		//System.out.println(response);
-		String targetUrl = "/api/newUser";
-		//System.out.println(authentication);
-		Facebook facebook = new FacebookTemplate(((OAuth2AuthenticationDetails)((OAuth2Authentication) authentication).getDetails()).getTokenValue());
-		String [] fields = { "id", "email",  "first_name", "last_name" };
-		User userProfile = facebook.fetchObject("me", User.class, fields);
-		
-		
-		System.out.println(userProfile.getFirstName());
-		System.out.println(authentication.getName());
+		//implementation
+				//System.out.println(request);
+				//System.out.println(response);
+				String targetUrl = "/api/newUser";
+				//System.out.println(authentication);
+				Facebook facebook = new FacebookTemplate(((OAuth2AuthenticationDetails)((OAuth2Authentication) authentication).getDetails()).getTokenValue());
+				String [] fields = { "id", "email",  "first_name", "last_name" };
+				User userProfile = facebook.fetchObject("me", User.class, fields);
+				
+				
+				System.out.println(userProfile.getFirstName());
+				System.out.println(authentication.getName());
 
-		//System.out.println(userProfile);
-		//System.out.println(userProfile.getId());
-		
-		try {
-			if (service.findByUserId(authentication.getName()) != null) {
-				System.out.println("we already have an account!");
-				System.out.println(userProfile.getId());
-				//redirectStrategy.sendRedirect(request, response, "/api/" + authentication.getName() + "/post");
-			}
-		} catch(NoSuchElementException e) {
-			System.out.println("no user found");
-			System.out.println("new user!");
-			//redirectStrategy.sendRedirect(request, response, targetUrl + "?userId=" + authentication.getName() + "&firstName=" + userProfile.getFirstName() + "&lastName=" + userProfile.getLastName() + "&email=" + userProfile.getEmail());
-			
-		}
-
+				//System.out.println(userProfile);
+				//System.out.println(userProfile.getId());
+				
+				try {
+					if (service.findByUserId(authentication.getName()) != null) {
+						System.out.println("we already have an account!");
+						System.out.println(userProfile.getId());
+						redirectStrategy.sendRedirect(request, response, "/success");
+					}
+				} catch(NoSuchElementException e) {
+					System.out.println("no user found");
+					System.out.println("new user!");
+					redirectStrategy.sendRedirect(request, response, "/newuser");
+					
+				}
 	}
 }

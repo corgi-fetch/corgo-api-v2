@@ -18,6 +18,8 @@ public class PostDTO {
 	private boolean serviceGiven;
 	private boolean serviceReceived;
 	
+	//private String state;
+	
 	public String getGroupId() {
 		return groupId;
 	}
