@@ -48,7 +48,9 @@ final class MongoDBPostService implements PostService{
 				post.getState())
 				.interestedQueue(userTransformer.ConvertListOfUserStubDTOToUser(post.getInterestedQueue()))
 				.serviceGiven(post.isServiceGiven())
-				.serviceReceived(post.isServiceReceived()).build();
+				.serviceReceived(post.isServiceReceived())
+				.selectedUserId(post.getSelectedUserId())
+				.responderUserId(post.getResponderUserId()).build();
 		persisted = postRepository.save(persisted);
 		
 		//Updating UserRepository
@@ -115,7 +117,9 @@ final class MongoDBPostService implements PostService{
 				post.getState())
 				.interestedQueue(userTransformer.ConvertListOfUserStubDTOToUser(post.getInterestedQueue()))
 				.serviceGiven(post.isServiceGiven())
-				.serviceReceived(post.isServiceReceived()));
+				.serviceReceived(post.isServiceReceived())
+				.selectedUserId(post.getSelectedUserId())
+				.responderUserId(post.getResponderUserId()));
 		System.out.println(updated.getInterestedQueue().get(0).getName());
 		updated = postRepository.save(updated);
 		System.out.println(updated.getInterestedQueue().get(0).getName());

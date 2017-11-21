@@ -20,6 +20,8 @@ public class Post {
 	private boolean serviceReceived;
 	
     private String state;
+    private String selectedUserId;
+	private String responderUserId;
 
 	private Post(Builder builder) {
 		this.date = builder.date;
@@ -33,6 +35,7 @@ public class Post {
 		this.serviceReceived = builder.serviceReceived;
 		
 		//this.state = builder.state;
+		
 	}
 	
 	public Post() {}
@@ -84,6 +87,14 @@ public class Post {
 	public String getState() {
 		return this.state;
 	}
+	
+	public String getSelectedUserId() {
+		return this.selectedUserId;
+	}
+	
+	public String getResponderUserId() {
+		return this.responderUserId;
+	}
 
 	public void update(Builder builder) {
 		this.date = builder.date;
@@ -99,6 +110,9 @@ public class Post {
 		this.groupId = builder.groupId;
 		
 		this.state = builder.state;
+		
+		this.selectedUserId = builder.selectedUserId;
+		this.responderUserId = builder.responderUserId;
 	}
 
 	public static class Builder {
@@ -116,6 +130,9 @@ public class Post {
 		private boolean serviceReceived = false;
 		
 		private String state;
+		
+		private String selectedUserId;
+		private String responderUserId;
 
 		public Builder(int date, User owner, String title, String description, double payment, String groupId, String state) {
 			this.date = date;
@@ -133,7 +150,11 @@ public class Post {
 			{ this.serviceGiven = _serviceGiven; return this; }
 		public Builder serviceReceived(boolean _serviceReceived)
 			{ this.serviceReceived = _serviceReceived; return this; }
-
+		public Builder selectedUserId(String _selectedUserId)
+			{ this.selectedUserId = _selectedUserId; return this; }
+		public Builder responderUserId(String _responderUserId)
+			{ this.responderUserId = _responderUserId; return this; }
+		
 		public Post build() {
 			return new Post(this);
 		}
