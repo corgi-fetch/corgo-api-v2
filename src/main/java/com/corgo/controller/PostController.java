@@ -86,18 +86,4 @@ public class PostController {
 		return postService.update(post);
 	}
 	
-	@RequestMapping(value = "{selectedUserId}", method = RequestMethod.PUT)
-	PostDTO addSelectedUserId(@PathVariable("selectedUserId") String selectedUserId, @PathVariable("id") String id, @RequestBody @Valid UserDTO selectedUser) {
-		PostDTO post = postService.findById(id);
-		post.setSelectedUserId(selectedUser.getUserId());
-		return postService.update(post);
-	}
-	
-	@RequestMapping(value = "{responderUserId}", method = RequestMethod.PUT)
-	PostDTO addResponderUserId(@PathVariable("responderUserId") String responderUserId, @PathVariable("id") String id, @RequestBody @Valid UserDTO responder) {
-		PostDTO post = postService.findById(id);
-		post.setResponderUserId(responder.getUserId());
-		return postService.update(post);
-	}
-	
 }
