@@ -59,5 +59,20 @@ public class InterestedPostController {
 		return postService.update(post);
 	}
 	
+	@RequestMapping(value = "{id}", method = RequestMethod.GET)
+	PostDTO addServiceRecieved(@PathVariable("userId") String userId, @PathVariable("id") String id) {
+		PostDTO post = postService.findById(id);
+		post.setServiceReceived(true);
+		return postService.update(post);
+	}
+	
+	@RequestMapping(value = "{id}", method = RequestMethod.DELETE)
+	PostDTO addServiceGiven(@PathVariable("userId") String userId, @PathVariable("id") String id) {
+		PostDTO post = postService.findById(id);
+		post.setServiceGiven(true);
+		return postService.update(post);
+	}
+	
+	
 }
 
