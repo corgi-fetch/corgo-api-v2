@@ -34,6 +34,7 @@ public class GroupController {
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
 	GroupDTO create(@PathVariable("userId") String userId, @RequestBody @Valid GroupDTO groupEntry) {
+		System.out.println("in group create controller");
 		GroupDTO created = groupService.create(groupEntry);
 		return created;
 	}
@@ -52,7 +53,8 @@ public class GroupController {
 	
 	@RequestMapping(method = RequestMethod.GET)
 	List<GroupDTO> findAll(@PathVariable("userId") String userId, @ModelAttribute Principal principal) {
-		System.out.println(principal.getName());
+		//System.out.println(principal.getName());
+		System.out.println("we are in find all " + groupService.findAll());
 		return groupService.findAll();
 	}
 	
