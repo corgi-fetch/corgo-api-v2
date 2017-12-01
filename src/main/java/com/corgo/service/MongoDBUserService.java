@@ -78,7 +78,7 @@ public class MongoDBUserService implements UserService{
 	
 	@Override
 	public UserDTO update(UserDTO user) {
-		User updated = FindUserById(user.getId());
+		User updated = FindUserById(user.getUserId());
 		
 		updated.setUserId(user.getUserId());
 		
@@ -92,6 +92,8 @@ public class MongoDBUserService implements UserService{
 		
 		updated.setCreditCardNumber(user.getCreditCardNumber());
 		updated.setBankAccount(user.getBankAccount());
+		
+		updated.setGroups(groupTransformer.ConvertListOfGroupDTOToGroup(user.getGroups()));
 		
 		updated.update(updated);
 		updated = userRepository.save(updated);

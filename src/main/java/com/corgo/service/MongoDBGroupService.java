@@ -1,5 +1,6 @@
 package com.corgo.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.corgo.DTO.GroupDTO;
 import com.corgo.DTO.UserDTO;
+import com.corgo.DTO.UserStubDTO;
 import com.corgo.model.Group;
 import com.corgo.repository.GroupRepository;
 import com.corgo.repository.PostRepository;
@@ -38,15 +40,40 @@ public class MongoDBGroupService implements GroupService {
 	@Override
 	public GroupDTO create(GroupDTO group) {
 		// TODO Auto-generated method stub
+		System.out.println("are we here");
+		
+		System.out.println("group dto " + group.getUsers().get(0).getUserId());
+		
 		Group persisted = new Group();
 		persisted.setDescription(group.getDescription());
 		persisted.setId(group.getId());
 		persisted.setInvited(group.getInvited());
 		persisted.setName(group.getName());
 		persisted.setPosts(postTransformer.ConvertListOfPostDTOToPost(group.getPosts()));
-		persisted.setUsers(userTransformer.ConvertListOfUserDTOToUser(group.getUsers()));
+		persisted.setUsers(userTransformer.ConvertListOfUserStubDTOToUser(group.getUsers()));
 		
+		System.out.println("prior save " + persisted.toString());
 		persisted = groupRepository.save(persisted);
+		
+		System.out.println("after save " + persisted.toString());
+		
+		for (UserStubDTO u : group.getUsers()) {
+			System.out.println("this is a userId " + u.getUserId());
+			UserDTO dto = userService.findByUserId(u.getUserId());
+			List<GroupDTO> groups = dto.getGroups();
+			if (groups != null) {
+				System.out.println("are we in this one null check");
+				groups.add(groupTransformer.ConvertGroupToGroupDTO(persisted));
+			} else {
+				System.out.println("are we in this other one null check");
+				groups = new ArrayList<>();
+				groups.add(groupTransformer.ConvertGroupToGroupDTO(persisted));
+			}
+			dto.setGroups(groups);
+			System.out.println("dto that is saved " + groups);
+			userService.update(dto);
+		}
+		
 		
 		return groupTransformer.ConvertGroupToGroupDTO(persisted);
 		
@@ -61,7 +88,9 @@ public class MongoDBGroupService implements GroupService {
 	@Override
 	public List<GroupDTO> findAll() {
 		// TODO Auto-generated method stub
-		return null;
+		List<Group> listDTO = groupRepository.findAll();
+		System.out.println("we are in group find all " + listDTO);
+		return groupTransformer.ConvertListOfGroupToGroupDTO(listDTO);
 	}
 
 	@Override

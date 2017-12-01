@@ -51,6 +51,8 @@ public class UserController {
 		return service.findByUserId(userId);
 	}
 	
+	
+	
 	@RequestMapping(value = "{id}", method = RequestMethod.PUT)
 	UserDTO update(@PathVariable("userId") String userId, @RequestBody @Valid UserDTO postEntry) {
 		return service.update(postEntry);
