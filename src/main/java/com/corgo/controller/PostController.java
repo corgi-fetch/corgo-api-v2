@@ -41,7 +41,7 @@ public class PostController {
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
 	PostDTO create(@PathVariable("userId") String userId, @RequestBody @Valid PostDTO postEntry) {
-		System.out.println("POST create");
+		System.out.println("POST create " + postEntry.getGroupId());
 		PostDTO created = postService.create(postEntry);		
 		return created;
 	}

@@ -39,8 +39,10 @@ final class MongoDBPostService implements PostService{
 	public PostDTO create(PostDTO post) {
 		// TODO Auto-generated method stub
 		//Saving in PostReository
+		//System.out.println("prior to save " + post.getGroupId());
+		
 		Post persisted = Post.getBuilder(post.getDate(), 
-				userTransformer.ConvertUserStubDTOToUser(post.getOwner()), 
+				post.getOwner(), 
 				post.getTitle(), 
 				post.getDescription(), 
 				post.getPayment(),
@@ -53,8 +55,9 @@ final class MongoDBPostService implements PostService{
 				.responderUserId(post.getResponderUserId()).build();
 		persisted = postRepository.save(persisted);
 		
+		
 		//Updating UserRepository
-		String userId = post.getOwner().getUserId();
+		String userId = post.getOwner();
 		List<PostDTO> userPosts = userService.findByUserId(userId).getCurrentPosts();
 		userPosts.add(post);
 		UserDTO currentUser = userService.findByUserId(userId);
@@ -65,7 +68,12 @@ final class MongoDBPostService implements PostService{
 		GroupDTO group = groupService.findById(post.getGroupId());
 		List<PostDTO> currentPosts = group.getPosts();
 		currentPosts.add(post);
-		groupService.update(group);
+		group.setPosts(currentPosts);
+		System.out.println("prior to post service " + group.getPosts().toString());
+		
+		group = groupService.update(group);
+		
+		System.out.println("in post service " + group.getPosts().toString());
 		
 		return postTransformer.ConvertPostToPostDTO(persisted);
 	}
@@ -76,7 +84,7 @@ final class MongoDBPostService implements PostService{
 		Post deleted = FindPostById(id);
 		postRepository.delete(deleted);
 		
-		String userId = deleted.getOwner().getUserId();
+		String userId = deleted.getOwner();
 		
 		if (findById(id).isServiceGiven() && findById(id).isServiceReceived()) {
 			return null;
@@ -109,7 +117,7 @@ final class MongoDBPostService implements PostService{
 		/** FIX GROUP WHEN GROUP IS CHANGED **/
 		Post updated = FindPostById(post.getId());
 		updated.update(new Post.Builder(post.getDate(), 
-				userTransformer.ConvertUserStubDTOToUser(post.getOwner()), 
+				post.getOwner(), 
 				post.getTitle(), 
 				post.getDescription(), 
 				post.getPayment(),

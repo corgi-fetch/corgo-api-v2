@@ -10,6 +10,7 @@ import com.corgo.DTO.GroupDTO;
 import com.corgo.DTO.UserDTO;
 import com.corgo.DTO.UserStubDTO;
 import com.corgo.model.Group;
+import com.corgo.model.Post;
 import com.corgo.repository.GroupRepository;
 import com.corgo.repository.PostRepository;
 import com.corgo.transformer.GroupTransformer;
@@ -96,13 +97,16 @@ public class MongoDBGroupService implements GroupService {
 	@Override
 	public GroupDTO findById(String id) {
 		// TODO Auto-generated method stub
-		return null;
+		Group found = groupRepository.findOne(id).get();
+		return groupTransformer.ConvertGroupToGroupDTO(found);
 	}
 
 	@Override
-	public GroupDTO update(GroupDTO post) {
+	public GroupDTO update(GroupDTO group) {
 		// TODO Auto-generated method stub
-		return null;
+		Group updated = groupRepository.save(groupTransformer.ConvertGroupDTOToGroup(group));
+		System.out.println("after save in update " + updated.getPosts().toString());
+		return groupTransformer.ConvertGroupToGroupDTO(updated);
 	}
 	
 	@Override

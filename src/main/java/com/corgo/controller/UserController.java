@@ -39,6 +39,12 @@ public class UserController {
 		return service.delete(userId);
 	}
 	
+	@RequestMapping(method = RequestMethod.POST)
+	UserDTO create(@RequestBody @Valid UserDTO postEntry) {
+		System.out.println(postEntry.getGroups());
+		return service.create(postEntry);
+	}
+	
 	@RequestMapping(method = RequestMethod.GET)
 	UserDTO findByUserId(@PathVariable("userId") String userId, @ModelAttribute Principal principal) {
 //		System.out.println("we here");

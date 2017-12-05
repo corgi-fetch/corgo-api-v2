@@ -43,9 +43,22 @@ final class PostTransformerImpl implements PostTransformer{
 	}
 	
 	public Post ConvertPostDTOToPost(PostDTO postDTO) {
-		Optional<Post> toReturn = postRepository.findOne(postDTO.getId());
+		
+		Post toReturn;
+		if (postDTO.getId() != null) {
+			toReturn = postRepository.findOne(postDTO.getId()).get();
+		} else {
+			toReturn = new Post().getBuilder(postDTO.getDate(), postDTO.getOwner(), postDTO.getTitle(), 
+					postDTO.getDescription(), postDTO.getPayment(), postDTO.getGroupId(), postDTO.getState()).
+					interestedQueue(userTransformer.ConvertListOfUserStubDTOToUser(postDTO.getInterestedQueue()))
+					.responderUserId(postDTO.getResponderUserId())
+					.selectedUserId(postDTO.getSelectedUserId())
+					.serviceGiven(postDTO.isServiceGiven())
+					.serviceReceived(postDTO.isServiceReceived()).build();
+		}
+		
 		//TODO: IMPLEMENT EXCEPTION AND ERROR HANDLING
-		return toReturn.get();
+		return toReturn;
 	}
 	
 	public PostDTO ConvertPostToPostDTO(Post model) {
@@ -56,7 +69,7 @@ final class PostTransformerImpl implements PostTransformer{
 	        		System.out.println("this is in the convert" + dto.getInterestedQueue().get(0).getName());
 	        dto.setId(model.getId());
 	        dto.setDate(model.getDate());
-	        dto.setOwner(userTransformer.ConvertUserToUserStubDTO(model.getOwner()));
+	        dto.setOwner(model.getOwner());
 	        dto.setTitle(model.getTitle());
 	        dto.setDescription(model.getDescription());
 	        dto.setPayment(model.getPayment());

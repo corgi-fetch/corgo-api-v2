@@ -30,6 +30,8 @@ public class GroupTransformerImpl implements GroupTransformer {
 	}
 	
 	public GroupDTO ConvertGroupToGroupDTO(Group model) { 
+		System.out.println("before transform " + model.getPosts().toString());
+		
 		GroupDTO dto = new GroupDTO();
 		dto.setId(model.getId());
 		dto.setDescription(model.getDescription());
@@ -37,6 +39,8 @@ public class GroupTransformerImpl implements GroupTransformer {
 		dto.setName(model.getName());
 		dto.setPosts(postTransformer.ConvertListOfPostsToPostDTO(model.getPosts()));
 		dto.setUsers(userTransformer.ConvertListOfUsersToUserStubDTO(model.getUsers()));
+		
+		System.out.println("after transform " + dto.getPosts().toString());
 		
 		return dto;
 	}
@@ -51,8 +55,13 @@ public class GroupTransformerImpl implements GroupTransformer {
 	}
 	
 	public Group ConvertGroupDTOToGroup(GroupDTO model) { 
-		Optional<Group> toReturn = groupRepository.findOne(model.getId());
-		return toReturn.get();
+		Group toReturn = groupRepository.findOne(model.getId()).get();
+		toReturn.setInvited(model.getInvited());
+		toReturn.setDescription(model.getDescription());
+		toReturn.setName(model.getName());
+		toReturn.setPosts(postTransformer.ConvertListOfPostDTOToPost(model.getPosts()));
+		toReturn.setUsers(userTransformer.ConvertListOfUserStubDTOToUser(model.getUsers()));
+		return toReturn;
 	}
 	
 	public List<Group> ConvertListOfGroupDTOToGroup(List<GroupDTO> model) {  
