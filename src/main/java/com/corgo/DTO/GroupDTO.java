@@ -13,7 +13,7 @@ public class GroupDTO {
 	
 	private String name;
 	private List<UserStubDTO> users;
-	private List<PostDTO> posts;
+	private List<PostStubDTO> posts;
 	List<String> invited;
 	
 	private String description;
@@ -46,10 +46,10 @@ public class GroupDTO {
 	public void setUsers(List<UserStubDTO> users) {
 		this.users = users;
 	}
-	public List<PostDTO> getPosts() {
+	public List<PostStubDTO> getPosts() {
 		return posts;
 	}
-	public void setPosts(List<PostDTO> posts) {
+	public void setPosts(List<PostStubDTO> posts) {
 		this.posts = posts;
 	}
 	
