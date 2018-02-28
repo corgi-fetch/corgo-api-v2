@@ -2,6 +2,7 @@ package com.corgo.transformer;
 
 import static java.util.stream.Collectors.toList;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import com.corgo.DTO.GroupDTO;
+import com.corgo.DTO.PostDTO;
 import com.corgo.model.Group;
 import com.corgo.model.Post;
 import com.corgo.repository.GroupRepository;
@@ -19,14 +21,16 @@ import com.corgo.repository.GroupRepository;
 public class GroupTransformerImpl implements GroupTransformer {
 	
 	private final UserTransformer userTransformer;
-	private final PostTransformer postTransformer;
+	private final PostStubTransformer postStubTransformer;
+//	private final PostTransformer postTransformer;
 	private final GroupRepository groupRepository;
 	
 	@Autowired
-	GroupTransformerImpl(@Lazy UserTransformer userTransformer, PostTransformer postTransformer, GroupRepository groupRepository) {
+	GroupTransformerImpl(@Lazy UserTransformer userTransformer, PostStubTransformer postStubTransformer, GroupRepository groupRepository, PostTransformer postTransformer) {
 		this.userTransformer = userTransformer;
-		this.postTransformer = postTransformer;
+		this.postStubTransformer = postStubTransformer;
 		this.groupRepository = groupRepository;
+//		this.postTransformer = postTransformer;
 	}
 	
 	public GroupDTO ConvertGroupToGroupDTO(Group model) { 
@@ -37,7 +41,7 @@ public class GroupTransformerImpl implements GroupTransformer {
 		dto.setDescription(model.getDescription());
 		dto.setInvited(model.getInvited());
 		dto.setName(model.getName());
-		dto.setPosts(postTransformer.ConvertListOfPostsToPostDTO(model.getPosts()));
+		dto.setPosts(postStubTransformer.ConvertListOfPostsToPostStubDTO(model.getPosts()));
 		dto.setUsers(userTransformer.ConvertListOfUsersToUserStubDTO(model.getUsers()));
 		
 		System.out.println("after transform " + dto.getPosts().toString());
@@ -59,7 +63,7 @@ public class GroupTransformerImpl implements GroupTransformer {
 		toReturn.setInvited(model.getInvited());
 		toReturn.setDescription(model.getDescription());
 		toReturn.setName(model.getName());
-		toReturn.setPosts(postTransformer.ConvertListOfPostDTOToPost(model.getPosts()));
+		toReturn.setPosts(postStubTransformer.ConvertListOfPostStubDTOToPost(model.getPosts()));
 		toReturn.setUsers(userTransformer.ConvertListOfUserStubDTOToUser(model.getUsers()));
 		return toReturn;
 	}
@@ -73,4 +77,5 @@ public class GroupTransformerImpl implements GroupTransformer {
 					.collect(toList());
 		}
 	}
+	
 }

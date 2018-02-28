@@ -70,8 +70,5 @@ public class GroupController {
 		GroupDTO group = groupService.findById(id);
 		return groupService.addUser(user);
 	}
-	
 
-	
-	
 }
