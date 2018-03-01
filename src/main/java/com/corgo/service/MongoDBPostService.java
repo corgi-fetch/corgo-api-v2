@@ -2,6 +2,7 @@ package com.corgo.service;
 
 
 import java.util.List;
+
 import java.util.Optional;
 
 
@@ -15,6 +16,7 @@ import com.corgo.model.*;
 import com.corgo.repository.*;
 import com.corgo.transformer.PostTransformer;
 import com.corgo.transformer.UserTransformer;
+import com.corgo.transformer.PostStubTransformer;
 
 @Service
 final class MongoDBPostService implements PostService{
@@ -24,15 +26,17 @@ final class MongoDBPostService implements PostService{
 	private final PostTransformer postTransformer;
 	private final UserService userService;
 	private final GroupService groupService;
+	private final PostStubTransformer postStubTransformer;
 	
 	
 	@Autowired
-    MongoDBPostService(PostRepository postRepository, UserTransformer userTransformer, PostTransformer postTransformer, UserService userService, GroupService groupService) {
+    MongoDBPostService(PostRepository postRepository, UserTransformer userTransformer, PostTransformer postTransformer, UserService userService, GroupService groupService, PostStubTransformer postStubTransformer) {
         this.postRepository = postRepository;
         this.userTransformer = userTransformer;
         this.postTransformer = postTransformer;
         this.userService = userService;
         this.groupService = groupService;
+        this.postStubTransformer = postStubTransformer;
     }
 	
 	@Override
@@ -66,8 +70,9 @@ final class MongoDBPostService implements PostService{
 		
 		//Updating GroupRepository
 		GroupDTO group = groupService.findById(post.getGroupId());
-		List<PostDTO> currentPosts = group.getPosts();
-		currentPosts.add(post);
+		List<PostStubDTO> currentPosts = group.getPosts();
+		Post transPost = postTransformer.ConvertPostDTOToPost(post);
+		currentPosts.add(postStubTransformer.ConvertPostToPostStubDTO(transPost));
 		group.setPosts(currentPosts);
 		System.out.println("prior to post service " + group.getPosts().toString());
 		
