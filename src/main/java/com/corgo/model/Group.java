@@ -8,15 +8,15 @@ public class Group {
 	@Id
 	private String id;
 	
-	private String name;
+	private String title;
 	private String description;
-	private List<User> users;
-	private List<Post> posts;
+	private List<UserStub> users;
+	private List<PostStub> posts;
 	private List<String> invited;
 	
 	@Override
 	public String toString() {
-		return "Group [id=" + id + ", name=" + name + ", posts=" + posts + ", users=" + users + "]";
+		return "Group [id=" + id + ", title=" + title + ", posts=" + posts + ", users=" + users + "]";
 	}
 
 	public String getId() {
@@ -43,27 +43,27 @@ public class Group {
 		this.description = description;
 	}
 
-	public String getName() {
-		return name;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
-	public List<User> getUsers() {
+	public List<UserStub> getUsers() {
 		return users;
 	}
 
-	public void setUsers(List<User> users) {
+	public void setUsers(List<UserStub> users) {
 		this.users = users;
 	}
 
-	public List<Post> getPosts() {
+	public List<PostStub> getPosts() {
 		return posts;
 	}
 
-	public void setPosts(List<Post> posts) {
+	public void setPosts(List<PostStub> posts) {
 		this.posts = posts;
 	}
 	

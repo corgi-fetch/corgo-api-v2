@@ -1,10 +1,10 @@
-package com.corgo.DTO;
+package com.corgo.model;
 
-public class PostStubDTO {
+public class PostStub {
 	private String id;
 	
 	private int date;
-	private UserStubDTO owner;
+	private UserStub owner;
 	private String title;
 	private String description;
 	private double payment;
@@ -27,11 +27,11 @@ public class PostStubDTO {
 		this.date = date;
 	}
 
-	public UserStubDTO getOwner() {
+	public UserStub getOwner() {
 		return owner;
 	}
 
-	public void setOwner(UserStubDTO owner) {
+	public void setOwner(UserStub owner) {
 		this.owner = owner;
 	}
 

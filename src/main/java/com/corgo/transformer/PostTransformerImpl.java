@@ -27,9 +27,13 @@ final class PostTransformerImpl implements PostTransformer{
     }
 	
 	public List<PostDTO> ConvertListOfPostsToPostDTO(List<Post> listPost) {
-		return listPost.stream()
-				.map(this::ConvertPostToPostDTO)
-				.collect(toList());
+		if (listPost == null || listPost.size() == 0) {
+			return new ArrayList<PostDTO>();
+		} else {
+			return listPost.stream()
+					.map(this::ConvertPostToPostDTO)
+					.collect(toList());
+		}
 	}
 	
 	public List<Post> ConvertListOfPostDTOToPost(List<PostDTO> listPostDTO) {
@@ -48,9 +52,9 @@ final class PostTransformerImpl implements PostTransformer{
 		if (postDTO.getId() != null) {
 			toReturn = postRepository.findOne(postDTO.getId()).get();
 		} else {
-			toReturn = new Post().getBuilder(postDTO.getDate(), postDTO.getOwner(), postDTO.getTitle(), 
+			toReturn = new Post().getBuilder(postDTO.getDate(), userTransformer.ConvertUserStubDTOToUserStub(postDTO.getOwner()), postDTO.getTitle(), 
 					postDTO.getDescription(), postDTO.getPayment(), postDTO.getGroupId(), postDTO.getState()).
-					interestedQueue(userTransformer.ConvertListOfUserStubDTOToUser(postDTO.getInterestedQueue()))
+					interestedQueue(userTransformer.ConvertListOfUserStubDTOToUserStubs(postDTO.getInterestedQueue()))
 					.responderUserId(postDTO.getResponderUserId())
 					.selectedUserId(postDTO.getSelectedUserId())
 					.serviceGiven(postDTO.isServiceGiven())
@@ -64,12 +68,12 @@ final class PostTransformerImpl implements PostTransformer{
 	public PostDTO ConvertPostToPostDTO(Post model) {
 		if (model != null) {
 	        PostDTO dto = new PostDTO();
-	        dto.setInterestedQueue(userTransformer.ConvertListOfUsersToUserStubDTO(model.getInterestedQueue()));
+	        dto.setInterestedQueue(userTransformer.ConvertListOfUserStubsToUserStubDTO(model.getInterestedQueue()));
 	        if(dto.getInterestedQueue().size() != 0)
 	        		System.out.println("this is in the convert" + dto.getInterestedQueue().get(0).getName());
 	        dto.setId(model.getId());
 	        dto.setDate(model.getDate());
-	        dto.setOwner(model.getOwner());
+	        dto.setOwner(userTransformer.ConvertUserStubToUserStubDTO(model.getOwner()));
 	        dto.setTitle(model.getTitle());
 	        dto.setDescription(model.getDescription());
 	        dto.setPayment(model.getPayment());

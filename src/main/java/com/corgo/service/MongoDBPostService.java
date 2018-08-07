@@ -42,44 +42,36 @@ final class MongoDBPostService implements PostService{
 	@Override
 	public PostDTO create(PostDTO post) {
 		// TODO Auto-generated method stub
-		//Saving in PostReository
-		//System.out.println("prior to save " + post.getGroupId());
+		//Saving in PostRepository
+		System.out.println("prior to save " + post.getGroupId());
+		
+		
 		
 		Post persisted = Post.getBuilder(post.getDate(), 
-				post.getOwner(), 
+				userTransformer.ConvertUserStubDTOToUserStub(post.getOwner()), 
 				post.getTitle(), 
 				post.getDescription(), 
 				post.getPayment(),
 				post.getGroupId(),
 				post.getState())
-				.interestedQueue(userTransformer.ConvertListOfUserStubDTOToUser(post.getInterestedQueue()))
+				.interestedQueue(userTransformer.ConvertListOfUserStubDTOToUserStubs(post.getInterestedQueue()))
 				.serviceGiven(post.isServiceGiven())
 				.serviceReceived(post.isServiceReceived())
 				.selectedUserId(post.getSelectedUserId())
 				.responderUserId(post.getResponderUserId()).build();
 		persisted = postRepository.save(persisted);
 		
+		System.out.println("prior to save " + persisted.getGroupId());
+		
 		
 		//Updating UserRepository
-		String userId = post.getOwner();
-		List<PostDTO> userPosts = userService.findByUserId(userId).getCurrentPosts();
-		userPosts.add(post);
-		UserDTO currentUser = userService.findByUserId(userId);
-		currentUser.setCurrentPosts(userPosts);
-		userService.update(currentUser);
+		String userId = post.getOwner().getUserId();
+		userService.updateWithNewPost(post, userId);
 		
 		//Updating GroupRepository
-		GroupDTO group = groupService.findById(post.getGroupId());
-		List<PostStubDTO> currentPosts = group.getPosts();
-		Post transPost = postTransformer.ConvertPostDTOToPost(post);
-		currentPosts.add(postStubTransformer.ConvertPostToPostStubDTO(transPost));
-		group.setPosts(currentPosts);
-		System.out.println("prior to post service " + group.getPosts().toString());
-		
-		group = groupService.update(group);
-		
-		System.out.println("in post service " + group.getPosts().toString());
-		
+		String groupId = post.getGroupId();
+		groupService.updateWithNewPost(persisted, groupId);
+	
 		return postTransformer.ConvertPostToPostDTO(persisted);
 	}
 
@@ -89,23 +81,23 @@ final class MongoDBPostService implements PostService{
 		Post deleted = FindPostById(id);
 		postRepository.delete(deleted);
 		
-		String userId = deleted.getOwner();
+		String userId = deleted.getOwner().getUserId();
 		
 		if (findById(id).isServiceGiven() && findById(id).isServiceReceived()) {
 			return null;
 		} else {
 			//PostDTO toDelete = findById(id);
-			List<PostDTO> userPosts = userService.findByUserId(userId).getPostHistory();
+			List<PostStubDTO> userPosts = userService.findByUserId(userId).getPostHistory();
 			userPosts.remove(findById(id));
 		}
 		return postTransformer.ConvertPostToPostDTO(deleted);
 	}
 
 	@Override
-	public List<PostDTO> findAll() {
+	public List<PostStubDTO> findAll() {
 		// TODO Auto-generated method stub
 		List<Post> postEntries = postRepository.findAll();
-		return postTransformer.ConvertListOfPostsToPostDTO(postEntries);
+		return postStubTransformer.ConvertListOfPostsToPostStubDTO(postEntries);
 	}
 
 	@Override
@@ -122,13 +114,13 @@ final class MongoDBPostService implements PostService{
 		/** FIX GROUP WHEN GROUP IS CHANGED **/
 		Post updated = FindPostById(post.getId());
 		updated.update(new Post.Builder(post.getDate(), 
-				post.getOwner(), 
+				userTransformer.ConvertUserStubDTOToUserStub(post.getOwner()), 
 				post.getTitle(), 
 				post.getDescription(), 
 				post.getPayment(),
 				post.getGroupId(),
 				post.getState())
-				.interestedQueue(userTransformer.ConvertListOfUserStubDTOToUser(post.getInterestedQueue()))
+				.interestedQueue(userTransformer.ConvertListOfUserStubDTOToUserStubs(post.getInterestedQueue()))
 				.serviceGiven(post.isServiceGiven())
 				.serviceReceived(post.isServiceReceived())
 				.selectedUserId(post.getSelectedUserId())

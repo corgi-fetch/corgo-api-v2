@@ -6,7 +6,7 @@ import com.corgo.DTO.*;
 public interface PostService {
 	PostDTO create(PostDTO post);
     PostDTO delete(String id);
-    List<PostDTO> findAll();
+    List<PostStubDTO> findAll();
     PostDTO findById(String id);
     PostDTO update(PostDTO post);
 }

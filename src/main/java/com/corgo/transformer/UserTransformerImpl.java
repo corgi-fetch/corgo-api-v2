@@ -2,6 +2,7 @@ package com.corgo.transformer;
 
 import static java.util.stream.Collectors.toList;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Component;
 
 import com.corgo.DTO.UserDTO;
 import com.corgo.DTO.UserStubDTO;
+import com.corgo.model.GroupStub;
 import com.corgo.model.User;
+import com.corgo.model.UserStub;
 import com.corgo.repository.UserRepository;
 import com.corgo.service.UserService;
 
@@ -22,13 +25,15 @@ final class UserTransformerImpl implements UserTransformer {
 	private final UserRepository userRepository;
 	private final GroupTransformer groupTransformer;
 	private final UserService userService;
+	private final PostStubTransformer postStubTransformer;
 	
 	@Autowired
-	UserTransformerImpl(@Lazy PostTransformer postTransformer, UserRepository userRepository, GroupTransformer groupTransformer, UserService userService) {
+	UserTransformerImpl(@Lazy PostTransformer postTransformer, UserRepository userRepository, GroupTransformer groupTransformer, UserService userService, PostStubTransformer postStubTransformer) {
 		this.postTransformer = postTransformer;
 		this.groupTransformer = groupTransformer;
 		this.userRepository = userRepository;
 		this.userService = userService;
+		this.postStubTransformer = postStubTransformer;
 	}
 
 	public UserDTO ConvertUserToUserDTO(User model) {
@@ -42,29 +47,37 @@ final class UserTransformerImpl implements UserTransformer {
 		
 		userDTO.setUserId(model.getUserId());
 		
-		userDTO.setPostHistory(postTransformer.ConvertListOfPostsToPostDTO(model.getPostHistory()));
-		userDTO.setCurrentPosts(postTransformer.ConvertListOfPostsToPostDTO(model.getCurrentPost()));
-		userDTO.setCurrentJobs(postTransformer.ConvertListOfPostsToPostDTO(model.getCurrentJobs()));
+		userDTO.setPostHistory(postStubTransformer.ConvertListOfPostStubsToPostStubDTO(model.getPostHistory()));
+		userDTO.setCurrentPosts(postStubTransformer.ConvertListOfPostStubsToPostStubDTO(model.getCurrentPost()));
+		userDTO.setCurrentJobs(postStubTransformer.ConvertListOfPostStubsToPostStubDTO(model.getCurrentJobs()));
 		
 		userDTO.setCreditCardNumber(model.getCreditCardNumber());
 		userDTO.setBankAccount(model.getBankAccount());
 		
-		userDTO.setGroups(groupTransformer.ConvertListOfGroupToGroupDTO(model.getGroups()));
+		userDTO.setGroups(groupTransformer.ConvertListOfGroupStubToGroupStubDTO(model.getGroups()));
 		
 		
 		return userDTO;
 	}
 	
 	public List<UserDTO> ConvertListOfUsersToUserDTO(List<User> listUser) {
-		return listUser.stream()
-				.map(this::ConvertUserToUserDTO)
-				.collect(toList());
+		if (listUser == null || listUser.size() == 0) {
+			return new ArrayList<UserDTO>();
+		} else {
+			return listUser.stream()
+					.map(this::ConvertUserToUserDTO)
+					.collect(toList());
+		}
 	}
 	
 	public List<UserStubDTO> ConvertListOfUsersToUserStubDTO(List<User> listUser) {
-		return listUser.stream()
-				.map(this::ConvertUserToUserStubDTO)
-				.collect(toList());
+		if (listUser == null || listUser.size() == 0) {
+			return new ArrayList<UserStubDTO>();
+		} else {
+			return listUser.stream()
+					.map(this::ConvertUserToUserStubDTO)
+					.collect(toList());
+		}
 	}
 	
 	public UserStubDTO ConvertUserToUserStubDTO(User model)
@@ -93,23 +106,69 @@ final class UserTransformerImpl implements UserTransformer {
 	
 	public List<User> ConvertListOfUserStubDTOToUser(List<UserStubDTO> listUserStubDTO)
 	{
-		return listUserStubDTO.stream()
-				.map(this::ConvertUserStubDTOToUser)
-				.collect(toList());
+		if (listUserStubDTO == null || listUserStubDTO.size() == 0) {
+			return new ArrayList<User>();
+		} else {
+			return listUserStubDTO.stream()
+					.map(this::ConvertUserStubDTOToUser)
+					.collect(toList());
+		}
 	}
 
 	@Override
 	public List<User> ConvertListOfUserDTOToUser(List<UserDTO> listUserDTO) {
-		// TODO Auto-generated method stub
-		return listUserDTO.stream()
-				.map(this::ConvertUserDTOToUser)
-				.collect(toList());
+		if (listUserDTO == null || listUserDTO.size() == 0) {
+			return new ArrayList<User>();
+		} else {
+			return listUserDTO.stream()
+					.map(this::ConvertUserDTOToUser)
+					.collect(toList());
+		}
 	}
 
 	@Override
 	public User ConvertUserDTOToUser(UserDTO userDTO) {
-		// TODO Auto-generated method stub
 		return userRepository.findByUserId(userDTO.getUserId()).get();
+	}
+
+	@Override
+	public List<UserStubDTO> ConvertListOfUserStubsToUserStubDTO(List<UserStub> listUserStub) {
+		if (listUserStub == null || listUserStub.size() == 0) {
+			return new ArrayList<UserStubDTO>();
+		} else {
+			return listUserStub.stream()
+					.map(this::ConvertUserStubToUserStubDTO)
+					.collect(toList());
+		}
+	}
+	
+	@Override
+	public UserStubDTO ConvertUserStubToUserStubDTO(UserStub stub) {
+		UserStubDTO toReturn = new UserStubDTO();
+		toReturn.setName(stub.getName());
+		toReturn.setRating(stub.getRating());
+		toReturn.setUserId(stub.getUserId());
+		return toReturn;
+	}
+
+	@Override
+	public List<UserStub> ConvertListOfUserStubDTOToUserStubs(List<UserStubDTO> listUserStubDTO) {
+		if (listUserStubDTO == null || listUserStubDTO.size() == 0) {
+			return new ArrayList<UserStub>();
+		} else {
+			return listUserStubDTO.stream()
+					.map(this::ConvertUserStubDTOToUserStub)
+					.collect(toList());
+		}
+	}
+	
+	@Override
+	public UserStub ConvertUserStubDTOToUserStub(UserStubDTO stubDTO) {
+		UserStub toReturn = new UserStub();
+		toReturn.setName(stubDTO.getName());
+		toReturn.setRating(stubDTO.getRating());
+		toReturn.setUserId(stubDTO.getUserId());
+		return toReturn;
 	}
 
 }

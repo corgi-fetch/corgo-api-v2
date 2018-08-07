@@ -10,4 +10,5 @@ public interface UserService {
     UserDTO findById(String id);
     UserDTO findByUserId(String userId);
     UserDTO update(UserDTO user);
+    UserDTO updateWithNewPost(PostDTO post, String userId);
 }

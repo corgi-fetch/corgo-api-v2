@@ -8,10 +8,10 @@ import com.corgo.model.Post;
 import com.corgo.model.User;
 
 public class GroupDTO {
-	@Id
+
 	private String id;
 	
-	private String name;
+	private String title;
 	private List<UserStubDTO> users;
 	private List<PostStubDTO> posts;
 	List<String> invited;
@@ -34,11 +34,11 @@ public class GroupDTO {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getName() {
-		return name;
+	public String getTitle() {
+		return title;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	public List<UserStubDTO> getUsers() {
 		return users;

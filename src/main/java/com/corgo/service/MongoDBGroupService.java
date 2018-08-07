@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.corgo.DTO.GroupDTO;
+import com.corgo.DTO.GroupStubDTO;
+import com.corgo.DTO.PostDTO;
+import com.corgo.DTO.PostStubDTO;
 import com.corgo.DTO.UserDTO;
 import com.corgo.DTO.UserStubDTO;
 import com.corgo.model.Group;
@@ -14,6 +17,7 @@ import com.corgo.model.Post;
 import com.corgo.repository.GroupRepository;
 import com.corgo.repository.PostRepository;
 import com.corgo.transformer.GroupTransformer;
+import com.corgo.transformer.PostStubTransformer;
 import com.corgo.transformer.PostTransformer;
 import com.corgo.transformer.UserTransformer;
 
@@ -26,16 +30,18 @@ public class MongoDBGroupService implements GroupService {
 	private final UserService userService;
 	private final GroupRepository groupRepository;
 	private final GroupTransformer groupTransformer;
+	private final PostStubTransformer postStubTransformer;
 	
 	
 	@Autowired
-    MongoDBGroupService(PostRepository postRepository, UserTransformer userTransformer, PostTransformer postTransformer, UserService userService, GroupRepository groupRepository, GroupTransformer groupTransformer) {
+    MongoDBGroupService(PostRepository postRepository, UserTransformer userTransformer, PostTransformer postTransformer, UserService userService, GroupRepository groupRepository, GroupTransformer groupTransformer, PostStubTransformer postStubTransformer) {
         this.postRepository = postRepository;
         this.userTransformer = userTransformer;
         this.postTransformer = postTransformer;
         this.groupRepository = groupRepository;
         this.userService = userService;
         this.groupTransformer = groupTransformer;
+        this.postStubTransformer = postStubTransformer;
     }
 	
 	@Override
@@ -49,26 +55,28 @@ public class MongoDBGroupService implements GroupService {
 		persisted.setDescription(group.getDescription());
 		persisted.setId(group.getId());
 		persisted.setInvited(group.getInvited());
-		persisted.setName(group.getName());
-		persisted.setPosts(postTransformer.ConvertListOfPostDTOToPost(group.getPosts()));
-		persisted.setUsers(userTransformer.ConvertListOfUserStubDTOToUser(group.getUsers()));
+		persisted.setTitle(group.getTitle());
+		persisted.setPosts(postStubTransformer.ConvertListOfPostStubDTOToPostStubs(group.getPosts()));
+		persisted.setUsers(userTransformer.ConvertListOfUserStubDTOToUserStubs(group.getUsers()));
 		
 		System.out.println("prior save " + persisted.toString());
 		persisted = groupRepository.save(persisted);
 		
 		System.out.println("after save " + persisted.toString());
 		
+		GroupDTO groupUpdated = groupTransformer.ConvertGroupToGroupDTO(persisted);
+		
 		for (UserStubDTO u : group.getUsers()) {
 			System.out.println("this is a userId " + u.getUserId());
 			UserDTO dto = userService.findByUserId(u.getUserId());
-			List<GroupDTO> groups = dto.getGroups();
+			List<GroupStubDTO> groups = dto.getGroups();
 			if (groups != null) {
 				System.out.println("are we in this one null check");
-				groups.add(groupTransformer.ConvertGroupToGroupDTO(persisted));
+				groups.add(groupTransformer.ConvertGroupDTOToGroupStubDTO(groupUpdated));
 			} else {
 				System.out.println("are we in this other one null check");
 				groups = new ArrayList<>();
-				groups.add(groupTransformer.ConvertGroupToGroupDTO(persisted));
+				groups.add(groupTransformer.ConvertGroupDTOToGroupStubDTO(groupUpdated));
 			}
 			dto.setGroups(groups);
 			System.out.println("dto that is saved " + groups);
@@ -78,6 +86,23 @@ public class MongoDBGroupService implements GroupService {
 		
 		return groupTransformer.ConvertGroupToGroupDTO(persisted);
 		
+	}
+	
+	@Override
+	public GroupDTO updateWithNewPost(Post persisted, String groupId) {
+		//Get Group from groupId
+		GroupDTO group = findById(groupId);
+		
+		//Get currentPosts from the group and add persisted post to it
+		List<PostStubDTO> currentPosts = group.getPosts();
+		currentPosts.add(postStubTransformer.ConvertPostToPostStubDTO(persisted));
+		
+		//Set group currentPosts
+		group.setPosts(currentPosts);
+		
+		//Update groups
+		group = update(group);
+		return group;
 	}
 
 	@Override

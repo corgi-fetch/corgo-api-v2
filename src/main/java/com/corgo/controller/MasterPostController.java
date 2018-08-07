@@ -36,7 +36,7 @@ public class MasterPostController {
 	}
 	
 	@RequestMapping(method = RequestMethod.GET)
-	List<PostDTO> findAll() {
+	List<PostStubDTO> findAll() {
 		return service.findAll();
 	}	
 	

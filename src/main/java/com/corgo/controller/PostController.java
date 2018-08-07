@@ -42,6 +42,8 @@ public class PostController {
 	@ResponseStatus(HttpStatus.CREATED)
 	PostDTO create(@PathVariable("userId") String userId, @RequestBody @Valid PostDTO postEntry) {
 		System.out.println("POST create " + postEntry.getGroupId());
+		
+		//Creating a Post
 		PostDTO created = postService.create(postEntry);		
 		return created;
 	}
@@ -58,7 +60,7 @@ public class PostController {
 	}
 	
 	@RequestMapping(method = RequestMethod.GET)
-	List<PostDTO> findAll(@PathVariable("userId") String userId, @ModelAttribute Principal principal) {
+	List<PostStubDTO> findAll(@PathVariable("userId") String userId, @ModelAttribute Principal principal) {
 		System.out.println(principal.getName());
 		return postService.findAll();
 	}

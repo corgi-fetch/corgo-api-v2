@@ -7,7 +7,7 @@ public class PostDTO {
 	private String id;
 	
 	private int date;
-	private String owner;
+	private UserStubDTO owner;
 	private String title;
 	private String description;
 	private double payment;
@@ -50,10 +50,10 @@ public class PostDTO {
 	public void setDate(int date) {
 		this.date = date;
 	}
-	public String getOwner() {
+	public UserStubDTO getOwner() {
 		return owner;
 	}
-	public void setOwner(String owner) {
+	public void setOwner(UserStubDTO owner) {
 		this.owner = owner;
 	}
 	public String getTitle() {

@@ -19,13 +19,15 @@ public class MongoDBUserService implements UserService{
 	private final UserTransformer userTransformer;
 	private final PostTransformer postTransformer;
 	private final GroupTransformer groupTransformer;
+	private final PostStubTransformer postStubTransformer;
 	
 	@Autowired
-    MongoDBUserService(@Lazy UserRepository userRepository, @Lazy UserTransformer userTransformer, PostTransformer postTransformer, GroupTransformer groupTransformer) {
+    MongoDBUserService(@Lazy UserRepository userRepository, @Lazy UserTransformer userTransformer, PostTransformer postTransformer, GroupTransformer groupTransformer, PostStubTransformer postStubTransformer) {
         this.userRepository = userRepository;
         this.userTransformer = userTransformer;
         this.postTransformer = postTransformer;
         this.groupTransformer = groupTransformer;
+        this.postStubTransformer = postStubTransformer;
     }
 	
 	@Override
@@ -36,14 +38,14 @@ public class MongoDBUserService implements UserService{
 		persisted.setEmail(user.getEmail());
 		persisted.setUserId(user.getUserId());
 		
-		persisted.setPostHistory(postTransformer.ConvertListOfPostDTOToPost(user.getPostHistory()));
-		persisted.setCurrentPost(postTransformer.ConvertListOfPostDTOToPost(user.getCurrentPosts()));
-		persisted.setCurrentJobs(postTransformer.ConvertListOfPostDTOToPost(user.getCurrentJobs()));
+		persisted.setPostHistory(postStubTransformer.ConvertListOfPostStubDTOToPostStubs(user.getPostHistory()));
+		persisted.setCurrentPost(postStubTransformer.ConvertListOfPostStubDTOToPostStubs(user.getCurrentPosts()));
+		persisted.setCurrentJobs(postStubTransformer.ConvertListOfPostStubDTOToPostStubs(user.getCurrentJobs()));
 		
 		persisted.setCreditCardNumber(user.getCreditCardNumber());
 		persisted.setBankAccount(user.getBankAccount());
 		
-		persisted.setGroups(groupTransformer.ConvertListOfGroupDTOToGroup(user.getGroups()));
+		persisted.setGroups(groupTransformer.ConvertListOfGroupStubDTOToGroupStub(user.getGroups()));
 		
 		persisted = userRepository.save(persisted);
 		return userTransformer.ConvertUserToUserDTO(persisted);
@@ -86,18 +88,48 @@ public class MongoDBUserService implements UserService{
 		updated.setName(user.getName());
 		updated.setEmail(user.getEmail());
 		
-		updated.setPostHistory(postTransformer.ConvertListOfPostDTOToPost(user.getPostHistory()));
-		updated.setCurrentPost(postTransformer.ConvertListOfPostDTOToPost(user.getCurrentPosts()));
-		updated.setCurrentJobs(postTransformer.ConvertListOfPostDTOToPost(user.getCurrentJobs()));
+		updated.setPostHistory(postStubTransformer.ConvertListOfPostStubDTOToPostStubs(user.getPostHistory()));
+		updated.setCurrentPost(postStubTransformer.ConvertListOfPostStubDTOToPostStubs(user.getCurrentPosts()));
+		updated.setCurrentJobs(postStubTransformer.ConvertListOfPostStubDTOToPostStubs(user.getCurrentJobs()));
 		
 		updated.setCreditCardNumber(user.getCreditCardNumber());
 		updated.setBankAccount(user.getBankAccount());
 		
-		updated.setGroups(groupTransformer.ConvertListOfGroupDTOToGroup(user.getGroups()));
+		updated.setGroups(groupTransformer.ConvertListOfGroupStubDTOToGroupStub(user.getGroups()));
 		
 		updated.update(updated);
 		updated = userRepository.save(updated);
 		return userTransformer.ConvertUserToUserDTO(updated);
+	}
+	
+	@Override
+	public UserDTO updateWithNewPost(PostDTO post, String userId) {
+		//Getting the currentUser
+		UserDTO currentUser = findByUserId(userId);
+		
+		//Getting existing user posts
+		List<PostStubDTO> userPosts = currentUser.getCurrentPosts();
+		
+		PostStubDTO toAdd = new PostStubDTO();
+		toAdd.setDate(post.getDate());
+		toAdd.setDescription(post.getDescription());
+		toAdd.setGroupId(post.getGroupId());
+		toAdd.setId(post.getId());
+		toAdd.setOwner(post.getOwner());
+		toAdd.setPayment(post.getPayment());
+		toAdd.setTitle(post.getTitle());
+		
+		
+		//Adding to list the new post
+		userPosts.add(toAdd);
+		
+		//Set current user
+		currentUser.setCurrentPosts(userPosts);
+		
+		//Update current user
+		//NOTE: this unnecessarily retrieves user twice, once  here, once in update
+		UserDTO updatedDTO = update(currentUser);
+		return updatedDTO;
 	}
 	
 	private User FindUserById(String userId) {

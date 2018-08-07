@@ -12,15 +12,15 @@ public class UserDTO {
     private String name;
     private String email;
     
-    private List<PostDTO> postHistory;
+    private List<PostStubDTO> postHistory;
     
-    private List<PostDTO> currentPosts;
+    private List<PostStubDTO> currentPosts;
     
-    private List<PostDTO> currentJobs;
+    private List<PostStubDTO> currentJobs;
     private String creditCardNumber;
     private String bankAccount;
     
-    private List<GroupDTO> groups;
+    private List<GroupStubDTO> groups;
     
 	public String getId() {
 		return id;
@@ -37,11 +37,11 @@ public class UserDTO {
     	this.userId = _userId;
     }
     
-    public void setGroups(List<GroupDTO> _groups) {
+    public void setGroups(List<GroupStubDTO> _groups) {
     	groups = _groups;
     }
 
-    public List<GroupDTO> getGroups() {
+    public List<GroupStubDTO> getGroups() {
     	return groups;
     }
 	
@@ -63,22 +63,22 @@ public class UserDTO {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public List<PostDTO> getPostHistory() {
+	public List<PostStubDTO> getPostHistory() {
 		return postHistory;
 	}
-	public void setPostHistory(List<PostDTO> postHistory) {
+	public void setPostHistory(List<PostStubDTO> postHistory) {
 		this.postHistory = postHistory;
 	}
-	public List<PostDTO> getCurrentPosts() {
+	public List<PostStubDTO> getCurrentPosts() {
 		return currentPosts;
 	}
-	public void setCurrentPosts(List<PostDTO> currentPosts) {
+	public void setCurrentPosts(List<PostStubDTO> currentPosts) {
 		this.currentPosts = currentPosts;
 	}
-	public List<PostDTO> getCurrentJobs() {
+	public List<PostStubDTO> getCurrentJobs() {
 		return currentJobs;
 	}
-	public void setCurrentJobs(List<PostDTO> currentJobs) {
+	public void setCurrentJobs(List<PostStubDTO> currentJobs) {
 		this.currentJobs = currentJobs;
 	}
 	public String getCreditCardNumber() {

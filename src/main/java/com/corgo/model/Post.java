@@ -8,14 +8,14 @@ public class Post {
 	private String id;
 	
 	private int date;
-	private String owner;
+	private UserStub owner;
 	private String title;
 	private String description;
 	private double payment;
 	
 	private String groupId;
 	
-	private List<User> interestedQueue;
+	private List<UserStub> interestedQueue;
 	private boolean serviceGiven;
 	private boolean serviceReceived;
 	
@@ -44,7 +44,7 @@ public class Post {
 	
 	public Post() {}
 
-	public static Builder getBuilder(int _date, String _owner, String _title, String _description, double _payment, String _groupId, String _state) {
+	public static Builder getBuilder(int _date, UserStub _owner, String _title, String _description, double _payment, String _groupId, String _state) {
 		return new Builder(_date, _owner, _title, _description, _payment, _groupId, _state);
 	}
 	
@@ -56,7 +56,7 @@ public class Post {
 		return this.date;
 	}
 
-	public String getOwner() {
+	public UserStub getOwner() {
 		return this.owner;
 	}
 
@@ -72,7 +72,7 @@ public class Post {
 		return this.payment;
 	}
 
-	public List<User> getInterestedQueue() {
+	public List<UserStub> getInterestedQueue() {
 		return this.interestedQueue;
 	}
 
@@ -122,14 +122,14 @@ public class Post {
 	public static class Builder {
 		
 		private int date;
-		private String owner;
+		private UserStub owner;
 		private String title;
 		private String description;
 		private double payment;
 		
 		private String groupId;
 		
-		private List<User> interestedQueue;
+		private List<UserStub> interestedQueue;
 		private boolean serviceGiven = false;
 		private boolean serviceReceived = false;
 		
@@ -138,7 +138,7 @@ public class Post {
 		private String selectedUserId;
 		private String responderUserId;
 
-		public Builder(int date, String owner, String title, String description, double payment, String groupId, String state) {
+		public Builder(int date, UserStub owner, String title, String description, double payment, String groupId, String state) {
 			this.date = date;
 			this.owner = owner;
 			this.title = title;
@@ -148,7 +148,7 @@ public class Post {
 			this.state = state;
 		}
 
-		public Builder interestedQueue(List<User> _interestedQueue) 
+		public Builder interestedQueue(List<UserStub> _interestedQueue) 
 			{ this.interestedQueue = _interestedQueue;	return this; }
 		public Builder serviceGiven(boolean _serviceGiven)
 			{ this.serviceGiven = _serviceGiven; return this; }

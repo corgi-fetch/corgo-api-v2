@@ -12,8 +12,10 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import com.corgo.DTO.GroupDTO;
+import com.corgo.DTO.GroupStubDTO;
 import com.corgo.DTO.PostDTO;
 import com.corgo.model.Group;
+import com.corgo.model.GroupStub;
 import com.corgo.model.Post;
 import com.corgo.repository.GroupRepository;
 
@@ -34,17 +36,19 @@ public class GroupTransformerImpl implements GroupTransformer {
 	}
 	
 	public GroupDTO ConvertGroupToGroupDTO(Group model) { 
-		System.out.println("before transform " + model.getPosts().toString());
-		
+//		System.out.println("before transform " + model.getId());
+		if (model.getPosts().size() > 0 ) {
+			System.out.println("this is model.posts " + model.getPosts().get(0).getId());
+		}
 		GroupDTO dto = new GroupDTO();
 		dto.setId(model.getId());
 		dto.setDescription(model.getDescription());
 		dto.setInvited(model.getInvited());
-		dto.setName(model.getName());
-		dto.setPosts(postStubTransformer.ConvertListOfPostsToPostStubDTO(model.getPosts()));
-		dto.setUsers(userTransformer.ConvertListOfUsersToUserStubDTO(model.getUsers()));
+		dto.setTitle(model.getTitle());
+		dto.setPosts(postStubTransformer.ConvertListOfPostStubsToPostStubDTO(model.getPosts()));
+		dto.setUsers(userTransformer.ConvertListOfUserStubsToUserStubDTO(model.getUsers()));
 		
-		System.out.println("after transform " + dto.getPosts().toString());
+//		System.out.println("after transform " + dto.getId());
 		
 		return dto;
 	}
@@ -62,9 +66,9 @@ public class GroupTransformerImpl implements GroupTransformer {
 		Group toReturn = groupRepository.findOne(model.getId()).get();
 		toReturn.setInvited(model.getInvited());
 		toReturn.setDescription(model.getDescription());
-		toReturn.setName(model.getName());
-		toReturn.setPosts(postStubTransformer.ConvertListOfPostStubDTOToPost(model.getPosts()));
-		toReturn.setUsers(userTransformer.ConvertListOfUserStubDTOToUser(model.getUsers()));
+		toReturn.setTitle(model.getTitle());
+		toReturn.setPosts(postStubTransformer.ConvertListOfPostStubDTOToPostStubs(model.getPosts()));
+		toReturn.setUsers(userTransformer.ConvertListOfUserStubDTOToUserStubs(model.getUsers()));
 		return toReturn;
 	}
 	
@@ -76,6 +80,59 @@ public class GroupTransformerImpl implements GroupTransformer {
 					.map(this::ConvertGroupDTOToGroup)
 					.collect(toList());
 		}
+	}
+
+	@Override
+	public List<GroupStubDTO> ConvertListOfGroupStubToGroupStubDTO(List<GroupStub> stub) {
+		if (stub == null || stub.size() == 0) {
+			return new ArrayList<GroupStubDTO>();
+		} else {
+			return stub.stream()
+					.map(this::ConvertGroupStubToGroupStubDTO)
+					.collect(toList());
+		}
+		
+	}
+
+	@Override
+	public List<GroupStub> ConvertListOfGroupStubDTOToGroupStub(List<GroupStubDTO> stubDTO) {
+		if (stubDTO == null || stubDTO.size() == 0) {
+			return new ArrayList<GroupStub>();
+		} else {
+			return stubDTO.stream()
+					.map(this::ConvertGroupStubDTOToGroupStub)
+					.collect(toList());
+		}
+	}
+
+	@Override
+	public GroupStub ConvertGroupStubDTOToGroupStub(GroupStubDTO stub) {
+		GroupStub toReturn = new GroupStub();
+		toReturn.setDescription(stub.getDescription());
+		toReturn.setId(stub.getId());
+		toReturn.setTitle(stub.getTitle());
+		toReturn.setUsers(userTransformer.ConvertListOfUserStubDTOToUserStubs(stub.getUsers()));
+		return toReturn;
+	}
+
+	@Override
+	public GroupStubDTO ConvertGroupStubToGroupStubDTO(GroupStub stubDTO) {
+		GroupStubDTO toReturn = new GroupStubDTO();
+		toReturn.setDescription(stubDTO.getDescription());
+		toReturn.setId(stubDTO.getId());
+		toReturn.setTitle(stubDTO.getTitle());
+		toReturn.setUsers(userTransformer.ConvertListOfUserStubsToUserStubDTO(stubDTO.getUsers()));
+		return toReturn;
+	}
+
+	@Override
+	public GroupStubDTO ConvertGroupDTOToGroupStubDTO(GroupDTO dto) {
+		GroupStubDTO toReturn = new GroupStubDTO();
+		toReturn.setDescription(dto.getDescription());
+		toReturn.setId(dto.getId());
+		toReturn.setTitle(dto.getTitle());
+		toReturn.setUsers(dto.getUsers());
+		return toReturn;
 	}
 	
 }

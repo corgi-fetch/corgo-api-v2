@@ -14,14 +14,14 @@ public class User {
     
     private String userId;
     
-    private List<Post> postHistory;
-    private List<Post> currentPosts;
-    private List<Post> currentJobs;
+    private List<PostStub> postHistory;
+    private List<PostStub> currentPosts;
+    private List<PostStub> currentJobs;
     
     private String creditCardNumber;
     private String bankAccount;
     
-    private List<Group> groups;
+    private List<GroupStub> groups;
 
     public User() {
 
@@ -54,11 +54,11 @@ public class User {
     	return id;
     }
         
-    public void setGroups(List<Group> _groups) {
+    public void setGroups(List<GroupStub> _groups) {
     	groups = _groups;
     }
 
-    public List<Group> getGroups() {
+    public List<GroupStub> getGroups() {
     	return groups;
     }
 
@@ -86,27 +86,27 @@ public class User {
         return email;
     }
 
-    public void setPostHistory(List<Post> _postHistory) {
+    public void setPostHistory(List<PostStub> _postHistory) {
         postHistory = _postHistory;
     }
 
-    public List<Post> getPostHistory() {
+    public List<PostStub> getPostHistory() {
         return postHistory;
     }
 
-    public void setCurrentPost(List<Post> _currentPosts) {
+    public void setCurrentPost(List<PostStub> _currentPosts) {
         currentPosts = _currentPosts;
     }
 
-    public List<Post> getCurrentPost() {
+    public List<PostStub> getCurrentPost() {
         return currentPosts;
     }
 
-    public void setCurrentJobs(List<Post> _currentJobs) {
+    public void setCurrentJobs(List<PostStub> _currentJobs) {
         currentJobs = _currentJobs;
     }
 
-    public List<Post> getCurrentJobs() {
+    public List<PostStub> getCurrentJobs() {
         return currentJobs;
     }
     
