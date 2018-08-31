@@ -45,33 +45,33 @@ public class InterestedPostController {
 //		return postService.update(postEntry);
 //	}
 	
-	@RequestMapping(value = "{id}", method = RequestMethod.PUT)
-	PostDTO addSelectedUserId(@PathVariable("userId") String userId, @PathVariable("id") String id, @RequestBody @Valid UserDTO selectedUser) {
-		PostDTO post = postService.findById(id);
-		post.setSelectedUserId(selectedUser.getUserId());
-		return postService.update(post);
-	}
+//	@RequestMapping(value = "{id}", method = RequestMethod.PUT)
+//	PostDTO addSelectedUserId(@PathVariable("userId") String userId, @PathVariable("id") String id, @RequestBody @Valid UserDTO selectedUser) {
+//		PostDTO post = postService.findById(id);
+//		post.setSelectedUserId(selectedUser.getUserId());
+//		return postService.update(post);
+//	}
 	
-	@RequestMapping(value = "{id}", method = RequestMethod.POST)
-	PostDTO addResponderUserId(@PathVariable("userId") String userId, @PathVariable("id") String id, @RequestBody @Valid UserDTO responder) {
-		PostDTO post = postService.findById(id);
-		post.setResponderUserId(responder.getUserId());
-		return postService.update(post);
-	}
-	
-	@RequestMapping(value = "{id}", method = RequestMethod.GET)
-	PostDTO addServiceRecieved(@PathVariable("userId") String userId, @PathVariable("id") String id) {
-		PostDTO post = postService.findById(id);
-		post.setServiceReceived(true);
-		return postService.update(post);
-	}
-	
-	@RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-	PostDTO addServiceGiven(@PathVariable("userId") String userId, @PathVariable("id") String id) {
-		PostDTO post = postService.findById(id);
-		post.setServiceGiven(true);
-		return postService.update(post);
-	}
+//	@RequestMapping(value = "{id}", method = RequestMethod.POST)
+//	PostDTO addResponderUserId(@PathVariable("userId") String userId, @PathVariable("id") String id, @RequestBody @Valid UserDTO responder) {
+//		PostDTO post = postService.findById(id);
+//		post.setResponderUserId(responder.getUserId());
+//		return postService.update(post);
+//	}
+//	
+//	@RequestMapping(value = "{id}", method = RequestMethod.GET)
+//	PostDTO addServiceRecieved(@PathVariable("userId") String userId, @PathVariable("id") String id) {
+//		PostDTO post = postService.findById(id);
+//		post.setServiceReceived(true);
+//		return postService.update(post);
+//	}
+//	
+//	@RequestMapping(value = "{id}", method = RequestMethod.DELETE)
+//	PostDTO addServiceGiven(@PathVariable("userId") String userId, @PathVariable("id") String id) {
+//		PostDTO post = postService.findById(id);
+//		post.setServiceGiven(true);
+//		return postService.update(post);
+//	}
 	
 	
 }

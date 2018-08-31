@@ -8,5 +8,5 @@ public interface PostService {
     PostDTO delete(String id);
     List<PostStubDTO> findAll();
     PostDTO findById(String id);
-    PostDTO update(PostDTO post);
+    PostDTO update(PostDTO post, boolean isNew);
 }

@@ -1,5 +1,6 @@
 package com.corgo.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -118,6 +119,7 @@ public class MongoDBUserService implements UserService{
 		toAdd.setOwner(post.getOwner());
 		toAdd.setPayment(post.getPayment());
 		toAdd.setTitle(post.getTitle());
+		toAdd.setState(post.getState());
 		
 		
 		//Adding to list the new post
@@ -132,10 +134,61 @@ public class MongoDBUserService implements UserService{
 		return updatedDTO;
 	}
 	
+	@Override
+	public UserDTO updateWithExistingPost(Post persisted, String userId) {
+		//Getting the currentUser
+		UserDTO currentUser = findByUserId(userId);
+		
+		//Getting existing user posts
+		List<PostStubDTO> userPosts = currentUser.getCurrentPosts();
+		
+		List<PostStubDTO> updatedList = findAndReplace(userPosts, postStubTransformer.ConvertPostToPostStubDTO(persisted));
+		
+		//Set current user
+		currentUser.setCurrentPosts(updatedList);
+		
+		//Update current user
+		//NOTE: this unnecessarily retrieves user twice, once  here, once in update
+		UserDTO updatedDTO = update(currentUser);
+		return updatedDTO;
+	}
+	
+	
+	
 	private User FindUserById(String userId) {
 		Optional<User> result = userRepository.findByUserId(userId);
 		//TODO: IMPLEMENT EXCEPTION AND ERROR HANDLING
 		return result.get();
+	}
+	
+	List<PostStubDTO> findAndReplace(List<PostStubDTO> listStub, PostStubDTO stubDTO) {
+		List<PostStubDTO> toReturn = new ArrayList<>();
+	    for(PostStubDTO stub : listStub) {
+	    	PostStubDTO toAdd = new PostStubDTO();
+	        if(stub.getId().equals(stubDTO.getId())) {
+	        	toAdd.setDate(stubDTO.getDate());
+	        	toAdd.setDescription(stubDTO.getDescription());
+	        	toAdd.setGroupId(stubDTO.getGroupId());
+	        	toAdd.setId(stubDTO.getId());
+	        	toAdd.setOwner(stubDTO.getOwner());
+	        	toAdd.setPayment(stubDTO.getPayment());
+	        	toAdd.setState(stubDTO.getState());
+	        	toAdd.setTitle(stubDTO.getTitle());
+	        } else {
+	        	toAdd.setDate(stub.getDate());
+	        	toAdd.setDescription(stub.getDescription());
+	        	toAdd.setGroupId(stub.getGroupId());
+	        	toAdd.setId(stub.getId());
+	        	toAdd.setOwner(stub.getOwner());
+	        	toAdd.setPayment(stub.getPayment());
+	        	toAdd.setState(stub.getState());
+	        	toAdd.setTitle(stub.getTitle());
+	        }
+	        
+	        toReturn.add(toAdd);
+	    }
+	    
+	    return toReturn;
 	}
 
 }

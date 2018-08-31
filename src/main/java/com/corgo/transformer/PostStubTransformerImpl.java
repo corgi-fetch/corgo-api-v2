@@ -48,7 +48,8 @@ public class PostStubTransformerImpl implements PostStubTransformer {
 	        dto.setDescription(model.getDescription());
 	        dto.setPayment(model.getPayment());
 	        dto.setGroupId(model.getGroupId());
-	        System.out.println("this is the id after transformation: " + dto.getId());
+	        dto.setState(model.getState());
+	        System.out.println("this is the state after transformation: " + dto.getState());
 	        return dto;
 		} else {
 			return null;
@@ -101,6 +102,7 @@ public class PostStubTransformerImpl implements PostStubTransformer {
 		toReturn.setOwner(userTransformer.ConvertUserStubDTOToUserStub(stubDTO.getOwner()));
 		toReturn.setPayment(stubDTO.getPayment());
 		toReturn.setTitle(stubDTO.getTitle());
+		toReturn.setState(stubDTO.getState());
 		return toReturn;
 	}
 	
@@ -125,6 +127,9 @@ public class PostStubTransformerImpl implements PostStubTransformer {
 		toReturn.setOwner(userTransformer.ConvertUserStubToUserStubDTO(stub.getOwner()));
 		toReturn.setPayment(stub.getPayment());
 		toReturn.setTitle(stub.getTitle());
+		toReturn.setState(stub.getState());
+		
+		System.out.println("what is the stub " + toReturn.getState());
 		return toReturn;
 	}
 }

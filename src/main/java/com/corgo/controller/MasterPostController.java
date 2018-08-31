@@ -47,7 +47,7 @@ public class MasterPostController {
 	
 	@RequestMapping(value = "{id}", method = RequestMethod.PUT)
 	PostDTO update(@RequestBody @Valid PostDTO postEntry) {
-		return service.update(postEntry);
+		return service.update(postEntry, false);
 	}
 	
 	@RequestMapping(value = "{id}", method = RequestMethod.DELETE)

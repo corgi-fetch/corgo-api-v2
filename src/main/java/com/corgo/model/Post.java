@@ -19,7 +19,7 @@ public class Post {
 	private boolean serviceGiven;
 	private boolean serviceReceived;
 	
-    private String state;
+    private int state;
     private String selectedUserId;
 	private String responderUserId;
 
@@ -44,7 +44,7 @@ public class Post {
 	
 	public Post() {}
 
-	public static Builder getBuilder(int _date, UserStub _owner, String _title, String _description, double _payment, String _groupId, String _state) {
+	public static Builder getBuilder(int _date, UserStub _owner, String _title, String _description, double _payment, String _groupId, int _state) {
 		return new Builder(_date, _owner, _title, _description, _payment, _groupId, _state);
 	}
 	
@@ -88,7 +88,7 @@ public class Post {
 		return this.groupId;
 	}
 	
-	public String getState() {
+	public int getState() {
 		return this.state;
 	}
 	
@@ -133,12 +133,12 @@ public class Post {
 		private boolean serviceGiven = false;
 		private boolean serviceReceived = false;
 		
-		private String state;
+		private int state;
 		
 		private String selectedUserId;
 		private String responderUserId;
 
-		public Builder(int date, UserStub owner, String title, String description, double payment, String groupId, String state) {
+		public Builder(int date, UserStub owner, String title, String description, double payment, String groupId, int state) {
 			this.date = date;
 			this.owner = owner;
 			this.title = title;

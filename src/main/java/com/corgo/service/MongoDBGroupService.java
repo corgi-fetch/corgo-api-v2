@@ -97,6 +97,7 @@ public class MongoDBGroupService implements GroupService {
 		List<PostStubDTO> currentPosts = group.getPosts();
 		currentPosts.add(postStubTransformer.ConvertPostToPostStubDTO(persisted));
 		
+		System.out.println("persisted in the grouptransformer update with new post " + persisted.getState());
 		//Set group currentPosts
 		group.setPosts(currentPosts);
 		
@@ -104,6 +105,27 @@ public class MongoDBGroupService implements GroupService {
 		group = update(group);
 		return group;
 	}
+	
+	@Override
+	public GroupDTO updateWithExistingPost(Post persisted, String groupId) {
+		//Get Group from groupId
+		GroupDTO group = findById(groupId);
+		
+		//Get currentPosts from the group and add persisted post to it
+		List<PostStubDTO> currentPosts = group.getPosts();
+		List<PostStubDTO> updatedList = findAndReplace(currentPosts, postStubTransformer.ConvertPostToPostStubDTO(persisted));
+		
+		
+		// System.out.println("persisted in the grouptransformer update with new post " + persisted.getState());
+		//Set group currentPosts
+		group.setPosts(updatedList);
+		
+		//Update groups
+		group = update(group);
+		return group;
+	}
+	
+	
 
 	@Override
 	public GroupDTO delete(String id) {
@@ -137,6 +159,36 @@ public class MongoDBGroupService implements GroupService {
 	@Override
 	public GroupDTO addUser(UserDTO user) {
 		return null;
+	}
+	
+	List<PostStubDTO> findAndReplace(List<PostStubDTO> listStub, PostStubDTO stubDTO) {
+		List<PostStubDTO> toReturn = new ArrayList<>();
+	    for(PostStubDTO stub : listStub) {
+	    	PostStubDTO toAdd = new PostStubDTO();
+	        if(stub.getId().equals(stubDTO.getId())) {
+	        	toAdd.setDate(stubDTO.getDate());
+	        	toAdd.setDescription(stubDTO.getDescription());
+	        	toAdd.setGroupId(stubDTO.getGroupId());
+	        	toAdd.setId(stubDTO.getId());
+	        	toAdd.setOwner(stubDTO.getOwner());
+	        	toAdd.setPayment(stubDTO.getPayment());
+	        	toAdd.setState(stubDTO.getState());
+	        	toAdd.setTitle(stubDTO.getTitle());
+	        } else {
+	        	toAdd.setDate(stub.getDate());
+	        	toAdd.setDescription(stub.getDescription());
+	        	toAdd.setGroupId(stub.getGroupId());
+	        	toAdd.setId(stub.getId());
+	        	toAdd.setOwner(stub.getOwner());
+	        	toAdd.setPayment(stub.getPayment());
+	        	toAdd.setState(stub.getState());
+	        	toAdd.setTitle(stub.getTitle());
+	        }
+	        
+	        toReturn.add(toAdd);
+	    }
+	    
+	    return toReturn;
 	}
 
 }

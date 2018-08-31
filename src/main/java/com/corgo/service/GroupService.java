@@ -14,4 +14,5 @@ public interface GroupService {
     GroupDTO update(GroupDTO post);
     GroupDTO addUser(UserDTO user);
     GroupDTO updateWithNewPost(Post persisted, String groupId);
+    GroupDTO updateWithExistingPost(Post persisted, String groupId); 
 }

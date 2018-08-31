@@ -18,15 +18,15 @@ public class PostDTO {
 	private boolean serviceGiven;
 	private boolean serviceReceived;
 	
-	private String state;
+	private int state;
 	public String selectedUserId;
 	public String responderUserId;
 	
-	public String getState() {
+	public int getState() {
 		return state;
 	}
 	
-	public void setState(String state) {
+	public void setState(int state) {
 		this.state = state;
 	}
 	

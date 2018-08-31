@@ -53,8 +53,9 @@ public class UserController {
 //		if (!userId.equals(principal.getName().toString())) {
 //			return null;
 //		}
+		UserDTO toReturn = service.findByUserId(userId);
 		
-		return service.findByUserId(userId);
+		return toReturn;
 	}
 	
 	

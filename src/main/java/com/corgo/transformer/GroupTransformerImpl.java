@@ -48,7 +48,7 @@ public class GroupTransformerImpl implements GroupTransformer {
 		dto.setPosts(postStubTransformer.ConvertListOfPostStubsToPostStubDTO(model.getPosts()));
 		dto.setUsers(userTransformer.ConvertListOfUserStubsToUserStubDTO(model.getUsers()));
 		
-//		System.out.println("after transform " + dto.getId());
+//		System.out.println("after transform " + dto.getPosts().get(1).getState());
 		
 		return dto;
 	}

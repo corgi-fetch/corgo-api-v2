@@ -53,7 +53,7 @@ final class MongoDBPostService implements PostService{
 				post.getDescription(), 
 				post.getPayment(),
 				post.getGroupId(),
-				post.getState())
+				1)
 				.interestedQueue(userTransformer.ConvertListOfUserStubDTOToUserStubs(post.getInterestedQueue()))
 				.serviceGiven(post.isServiceGiven())
 				.serviceReceived(post.isServiceReceived())
@@ -61,18 +61,20 @@ final class MongoDBPostService implements PostService{
 				.responderUserId(post.getResponderUserId()).build();
 		persisted = postRepository.save(persisted);
 		
-		System.out.println("prior to save " + persisted.getGroupId());
+		System.out.println("prior to save " + persisted.getState());
 		
 		
 		//Updating UserRepository
 		String userId = post.getOwner().getUserId();
-		userService.updateWithNewPost(post, userId);
+		userService.updateWithNewPost(postTransformer.ConvertPostToPostDTO(persisted), userId);
 		
 		//Updating GroupRepository
 		String groupId = post.getGroupId();
 		groupService.updateWithNewPost(persisted, groupId);
 	
-		return postTransformer.ConvertPostToPostDTO(persisted);
+		PostDTO toReturn =  postTransformer.ConvertPostToPostDTO(persisted);
+		System.out.println(toReturn.getState());
+		return toReturn;
 	}
 
 	@Override
@@ -109,7 +111,7 @@ final class MongoDBPostService implements PostService{
 	}
 
 	@Override
-	public PostDTO update(PostDTO post) {
+	public PostDTO update(PostDTO post, boolean isNew) {
 		// TODO Auto-generated method stub
 		/** FIX GROUP WHEN GROUP IS CHANGED **/
 		Post updated = FindPostById(post.getId());
@@ -125,12 +127,26 @@ final class MongoDBPostService implements PostService{
 				.serviceReceived(post.isServiceReceived())
 				.selectedUserId(post.getSelectedUserId())
 				.responderUserId(post.getResponderUserId()));
-		System.out.println(updated.getInterestedQueue().get(0).getName());
+		//System.out.println(updated.getInterestedQueue().get(0).getName());
 		updated = postRepository.save(updated);
-		System.out.println(updated.getInterestedQueue().get(0).getName());
-		System.out.println((postRepository.findOne(updated.getId())).get().getInterestedQueue().size());
+		//System.out.println(updated.getInterestedQueue().get(0).getName());
+		//System.out.println((postRepository.findOne(updated.getId())).get().getInterestedQueue().size());
 		PostDTO dto = postTransformer.ConvertPostToPostDTO(updated);
-		System.out.println("dto " + dto.getInterestedQueue().size());
+		String userId = post.getOwner().getUserId();
+		String groupId = post.getGroupId();
+
+		if (isNew) {
+			//Updating UserRepository
+			userService.updateWithNewPost(postTransformer.ConvertPostToPostDTO(updated), userId);
+			
+			//Updating GroupRepository
+			groupService.updateWithNewPost(updated, groupId);
+			//System.out.println("dto " + dto.getInterestedQueue().size());
+		} else {
+			userService.updateWithExistingPost(updated, userId);
+			
+			groupService.updateWithExistingPost(updated, groupId);
+		}
 		return postTransformer.ConvertPostToPostDTO(updated);
 	}
 

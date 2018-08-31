@@ -23,5 +23,14 @@ public class UserStubDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	@Override 
+	public boolean equals(Object obj) {
+		if(!(obj instanceof UserStubDTO)) {
+			return false;
+		}
+		UserStubDTO stub = (UserStubDTO) obj;
+		return stub.getUserId().equals(this.getUserId());
+	}
 
 }

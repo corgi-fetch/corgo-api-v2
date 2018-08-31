@@ -80,9 +80,9 @@ final class PostTransformerImpl implements PostTransformer{
 	        dto.setServiceGiven(model.getServiceGiven());
 	        dto.setServiceReceived(model.getServiceReceived());
 	        dto.setGroupId(model.getGroupId());
-	        dto.setState(model.getState());
 	        dto.setSelectedUserId(model.getSelectedUserId());
 	        dto.setResponderUserId(model.getResponderUserId());
+	        dto.setState(model.getState());
 	        return dto;
 		} else {
 			return null;

@@ -48,11 +48,11 @@ public class PostController {
 		return created;
 	}
 	
-	@RequestMapping(value="{id}", method = RequestMethod.DELETE)
-	@ResponseBody
-	PostDTO delete(@PathVariable("userId") String userId, @PathVariable("id") String id) {
-		return postService.delete(id);
-	}
+//	@RequestMapping(value="{id}", method = RequestMethod.DELETE)
+//	@ResponseBody
+//	PostDTO delete(@PathVariable("userId") String userId, @PathVariable("id") String id) {
+//		return postService.delete(id);
+//	}
 	
 	@RequestMapping(value = "{id}", method = RequestMethod.GET)
 	PostDTO findById(@PathVariable("userId") String userId, @PathVariable("id") String id) {
@@ -72,7 +72,7 @@ public class PostController {
 //	}
 	
 	@RequestMapping(value = "{id}", method = RequestMethod.PUT)
-	PostDTO addInterestedQueue(@PathVariable("userId") String userId, @PathVariable("id") String id, @RequestBody @Valid UserDTO interestedUser) {
+	PostDTO addInterestedQueue(@PathVariable("userId") String userId, @PathVariable("id") String id, @RequestBody @Valid UserStubDTO interestedUser) {
 		System.out.println("we r here");
 		PostDTO post = postService.findById(id);
 		List<UserStubDTO> interestedQueue = post.getInterestedQueue();
@@ -81,11 +81,47 @@ public class PostController {
 			System.out.println("inside null check");
 			interestedQueue = new ArrayList<>();
 		}
-		UserStubDTO stub = userTransformer.ConvertUserDTOToUserStubDTO(interestedUser);
-		interestedQueue.add(stub);
+		
+		interestedQueue.add(interestedUser);
 		post.setInterestedQueue(interestedQueue);
 		System.out.println(post.getInterestedQueue().size());
-		return postService.update(post);
+		return postService.update(post, false);
 	}
 	
+	@RequestMapping(value = "{id}", method = RequestMethod.POST)
+	PostDTO selectUser(@PathVariable("userId") String userId, @PathVariable("id") String id, @RequestBody @Valid UserStubDTO interestedUser) {
+		System.out.println("we r here");
+		PostDTO post = postService.findById(id);
+		post.setResponderUserId(interestedUser.getUserId());
+		post.setInterestedQueue(new ArrayList<>());
+		post.setState(2);
+		
+		
+//		System.out.println(post.getInterestedQueue().size());
+		return postService.update(post, false);
+	}
+	
+	
+	
+	
+	@RequestMapping(value = "{id}", method = RequestMethod.DELETE)
+	PostDTO removeInterestedQueue(@PathVariable("userId") String userId, @PathVariable("id") String id, @RequestBody @Valid UserStubDTO interestedUser) {
+		System.out.println("we r here");
+		PostDTO post = postService.findById(id);
+		List<UserStubDTO> interestedQueue = post.getInterestedQueue();
+		System.out.println(interestedQueue);
+		if(interestedQueue == null) {
+			System.out.println("inside null check");
+			interestedQueue = new ArrayList<>();
+		}
+		
+		System.out.println("before remove" + interestedQueue.size());
+		System.out.println(interestedQueue.indexOf(interestedUser));
+		System.out.println(interestedQueue.get(0).getUserId());
+		interestedQueue.remove(interestedUser);
+		System.out.println("after remove" + interestedQueue.size());
+		post.setInterestedQueue(interestedQueue);
+		System.out.println(post.getInterestedQueue().size());
+		return postService.update(post, false);
+	}
 }

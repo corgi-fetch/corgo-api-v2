@@ -10,6 +10,8 @@ public class PostStubDTO {
 	private double payment;
 	
 	private String groupId;
+	
+	private int state;
 
 	public String getId() {
 		return id;
@@ -65,6 +67,14 @@ public class PostStubDTO {
 
 	public void setGroupId(String groupId) {
 		this.groupId = groupId;
+	}
+
+	public int getState() {
+		return state;
+	}
+
+	public void setState(int state) {
+		this.state = state;
 	}
 
 }
