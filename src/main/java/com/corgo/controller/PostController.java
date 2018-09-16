@@ -28,14 +28,10 @@ import com.corgo.DTO.*;
 public class PostController {
 	
 	private final PostService postService;
-	private final UserService userService;
-	private final UserTransformer userTransformer;
 	
 	@Autowired
-	PostController (@Lazy PostService postService, UserService userService, UserTransformer userTransformer) {
+	PostController (@Lazy PostService postService) {
 		this.postService = postService;
-		this.userService = userService;
-		this.userTransformer = userTransformer;
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
