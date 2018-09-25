@@ -22,6 +22,8 @@ public class UserDTO {
     
     private List<GroupStubDTO> groups;
     
+    private String pushToken;
+    
 	public String getId() {
 		return id;
 	}
@@ -92,6 +94,14 @@ public class UserDTO {
 	}
 	public void setBankAccount(String bankAccount) {
 		this.bankAccount = bankAccount;
+	}
+	
+	public String getPushToken() {
+		return this.pushToken;
+	}
+	
+	public void setPushToken(String pushToken) {
+		this.pushToken = pushToken;
 	}
     
     

@@ -22,6 +22,8 @@ public class User {
     private String bankAccount;
     
     private List<GroupStub> groups;
+    
+    private String pushToken;
 
     public User() {
 
@@ -40,6 +42,8 @@ public class User {
     	
     	this.creditCardNumber = user.creditCardNumber;
     	this.bankAccount = user.bankAccount;
+    	
+    	this.pushToken = user.pushToken;
     }
     
     public String getUserId() {
@@ -124,5 +128,13 @@ public class User {
 
     public String getBankAccount() {
         return bankAccount;
+    }
+    
+    public String getPushToken() {
+    	return pushToken;
+    }
+    
+    public void setPushToken(String _pushToken) {
+    	pushToken = _pushToken;
     }
 }

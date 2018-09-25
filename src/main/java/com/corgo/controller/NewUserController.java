@@ -28,7 +28,7 @@ import com.corgo.DTO.UserDTO;
 import com.corgo.service.UserService;
 
 @RestController
-@RequestMapping("/api/newUser")
+@RequestMapping("/api/newuser#_=_")
 public class NewUserController {
 	
 	@Autowired
@@ -38,15 +38,23 @@ public class NewUserController {
 		this.service = service;
 	}
 	
-	@RequestMapping(method = RequestMethod.GET)	
+	@RequestMapping(method = RequestMethod.GET)
+	UserDTO newCreate() {
+		System.out.println("We are in this get right here");
+		return null;
+	}
+	
+	@RequestMapping(method = RequestMethod.POST)	
 	UserDTO create(@RequestParam("userId") String userId, @RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName, @RequestParam("email") String email) {
+		System.out.println("We are creating a new user right now");
+		
 		UserDTO partialUser = new UserDTO();
 		partialUser.setUserId(userId);
 		partialUser.setName(firstName + " " + lastName);
 		partialUser.setEmail(email);
 		
 		
-		//System.out.println(activeUser);
+		//System.out.println(partial);
 		return service.create(partialUser);
 	}
 

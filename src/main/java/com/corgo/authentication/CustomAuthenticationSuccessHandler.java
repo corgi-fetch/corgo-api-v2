@@ -15,12 +15,14 @@ import org.springframework.security.oauth2.provider.authentication.OAuth2Authent
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.social.connect.Connection;
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.api.User;
 import org.springframework.social.facebook.api.impl.FacebookTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import com.corgo.DTO.UserDTO;
 import com.corgo.service.UserService;
 
 @Component
@@ -43,7 +45,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 		//implementation
 				//System.out.println(request);
 				//System.out.println(response);
-				String targetUrl = "/api/newUser";
+				//String targetUrl = "/api/newUser";
 				//System.out.println(authentication);
 				Facebook facebook = new FacebookTemplate(((OAuth2AuthenticationDetails)((OAuth2Authentication) authentication).getDetails()).getTokenValue());
 				String [] fields = { "id", "email",  "first_name", "last_name" };
@@ -63,8 +65,17 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 						redirectStrategy.sendRedirect(request, response, "/success");
 					}
 				} catch(NoSuchElementException e) {
-					System.out.println("no user found");
-					System.out.println("new user!");
+					System.out.println("in custom authentication ");
+
+					
+					UserDTO partialUser = new UserDTO();
+					partialUser.setUserId(authentication.getName());
+					partialUser.setName(userProfile.getFirstName() + " " + userProfile.getLastName());
+					partialUser.setEmail(userProfile.getEmail());
+					
+					System.out.println(service.create(partialUser));
+
+					
 					redirectStrategy.sendRedirect(request, response, "/newuser");
 					
 				}

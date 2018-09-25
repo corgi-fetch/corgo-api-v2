@@ -56,6 +56,8 @@ final class UserTransformerImpl implements UserTransformer {
 		
 		userDTO.setGroups(groupTransformer.ConvertListOfGroupStubToGroupStubDTO(model.getGroups()));
 		
+		userDTO.setPushToken(model.getPushToken());
+		
 		
 		return userDTO;
 	}

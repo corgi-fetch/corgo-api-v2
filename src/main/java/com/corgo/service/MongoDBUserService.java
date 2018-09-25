@@ -48,6 +48,8 @@ public class MongoDBUserService implements UserService{
 		
 		persisted.setGroups(groupTransformer.ConvertListOfGroupStubDTOToGroupStub(user.getGroups()));
 		
+		persisted.setPushToken(user.getPushToken());
+		
 		persisted = userRepository.save(persisted);
 		return userTransformer.ConvertUserToUserDTO(persisted);
 	}
@@ -97,6 +99,8 @@ public class MongoDBUserService implements UserService{
 		updated.setBankAccount(user.getBankAccount());
 		
 		updated.setGroups(groupTransformer.ConvertListOfGroupStubDTOToGroupStub(user.getGroups()));
+		
+		updated.setPushToken(user.getPushToken());
 		
 		updated.update(updated);
 		updated = userRepository.save(updated);
