@@ -45,6 +45,13 @@ public class UserController {
 		return service.create(postEntry);
 	}
 	
+	@RequestMapping(value = "/{token}", method = RequestMethod.POST)
+	UserDTO addPushNotification(@PathVariable("userId") String userId, @PathVariable("token") String token) {
+		System.out.println("ADDING PUSH NOTIFICATION");
+		System.out.println(token);
+		return null;
+	}
+	
 	@RequestMapping(method = RequestMethod.GET)
 	UserDTO findByUserId(@PathVariable("userId") String userId, @ModelAttribute Principal principal) {
 //		System.out.println("we here");
@@ -60,8 +67,9 @@ public class UserController {
 	
 	
 	
-	@RequestMapping(value = "{id}", method = RequestMethod.PUT)
-	UserDTO update(@PathVariable("userId") String userId, @RequestBody @Valid UserDTO postEntry) {
+	@RequestMapping(method = RequestMethod.PUT)
+	UserDTO update(@RequestBody @Valid UserDTO postEntry) {
+		System.out.println("We are in userDTO update");
 		return service.update(postEntry);
 	}
 	

@@ -10,6 +10,6 @@ import com.corgo.model.*;
 public interface PostRepository extends Repository<Post, String> {
     void delete(Post deleted);
     List<Post> findAll();
-    Optional<Post> findOne(String id);
+    Optional<Post> findById(String id);
     Post save(Post saved);
 }

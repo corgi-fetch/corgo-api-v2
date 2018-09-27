@@ -1,15 +1,24 @@
 package com.corgo.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import com.corgo.DTO.GroupDTO;
 import com.corgo.DTO.GroupStubDTO;
 import com.corgo.DTO.PostDTO;
 import com.corgo.DTO.PostStubDTO;
+import com.corgo.DTO.PushMessage;
+import com.corgo.DTO.PushTickets;
 import com.corgo.DTO.UserDTO;
 import com.corgo.DTO.UserStubDTO;
 import com.corgo.model.Group;
@@ -20,6 +29,9 @@ import com.corgo.transformer.GroupTransformer;
 import com.corgo.transformer.PostStubTransformer;
 import com.corgo.transformer.PostTransformer;
 import com.corgo.transformer.UserTransformer;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class MongoDBGroupService implements GroupService {
@@ -83,7 +95,41 @@ public class MongoDBGroupService implements GroupService {
 			userService.update(dto);
 		}
 		
+		// Push notification!
+		String url = "https://exp.host/--/api/v2/push/send";
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+
+		// Testing Push Notifications
+		RestTemplate restTemplate = new RestTemplate();
+		List<PushMessage> listMsg = new ArrayList<>();
 		
+		for (UserStubDTO user : group.getUsers()) {
+			PushMessage msg = new PushMessage();
+			
+			msg.setTo(user.getPushToken());
+			msg.setTitle("You've been added to " + group.getTitle());
+			msg.setBody("Start posting and answering requests!");
+			msg.setChannelId("corgo-notifications");
+			listMsg.add(msg);
+		}
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.setSerializationInclusion(Include.NON_NULL);
+		objectMapper.setSerializationInclusion(Include.NON_EMPTY); 
+		String msgJsonList = "";
+		try {
+			msgJsonList = objectMapper.writeValueAsString(listMsg);
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println("msgJsonList " + msgJsonList);
+		
+		HttpEntity<String> httpEntity = new HttpEntity<String>(msgJsonList, headers);
+		PushTickets tickets = restTemplate.postForEntity(url, httpEntity, PushTickets.class).getBody();
+
+	
 		return groupTransformer.ConvertGroupToGroupDTO(persisted);
 		
 	}
@@ -103,6 +149,43 @@ public class MongoDBGroupService implements GroupService {
 		
 		//Update groups
 		group = update(group);
+		
+		
+		// Push notification!
+		String url = "https://exp.host/--/api/v2/push/send";
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+
+		// Testing Push Notifications
+		RestTemplate restTemplate = new RestTemplate();
+		List<PushMessage> listMsg = new ArrayList<>();
+		
+		for (UserStubDTO user : group.getUsers()) {
+			PushMessage msg = new PushMessage();
+			
+			msg.setTo(user.getPushToken());
+			msg.setTitle("Request posted in " + group.getTitle());
+			msg.setBody(persisted.getOwner().getName() + " posted a request!");
+			msg.setChannelId("corgo-notifications");
+			listMsg.add(msg);
+		}
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.setSerializationInclusion(Include.NON_NULL);
+		objectMapper.setSerializationInclusion(Include.NON_EMPTY); 
+		String msgJsonList = "";
+		try {
+			msgJsonList = objectMapper.writeValueAsString(listMsg);
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println("msgJsonList " + msgJsonList);
+		
+		HttpEntity<String> httpEntity = new HttpEntity<String>(msgJsonList, headers);
+		PushTickets tickets = restTemplate.postForEntity(url, httpEntity, PushTickets.class).getBody();
+		
+		System.out.println("tickets here " + tickets);
 		return group;
 	}
 	
@@ -116,12 +199,16 @@ public class MongoDBGroupService implements GroupService {
 		List<PostStubDTO> updatedList = findAndReplace(currentPosts, postStubTransformer.ConvertPostToPostStubDTO(persisted));
 		
 		
+		
 		// System.out.println("persisted in the grouptransformer update with new post " + persisted.getState());
 		//Set group currentPosts
 		group.setPosts(updatedList);
 		
 		//Update groups
 		group = update(group);
+		
+
+		
 		return group;
 	}
 	
@@ -144,7 +231,7 @@ public class MongoDBGroupService implements GroupService {
 	@Override
 	public GroupDTO findById(String id) {
 		// TODO Auto-generated method stub
-		Group found = groupRepository.findOne(id).get();
+		Group found = groupRepository.findById(id).get();
 		return groupTransformer.ConvertGroupToGroupDTO(found);
 	}
 

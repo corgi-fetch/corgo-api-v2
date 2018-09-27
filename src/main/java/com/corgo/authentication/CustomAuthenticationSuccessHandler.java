@@ -52,7 +52,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 				User userProfile = facebook.fetchObject("me", User.class, fields);
 				
 				
-				System.out.println(userProfile.getFirstName());
+				System.out.println("We are in the authenticationSuceess" + userProfile.getFirstName());
 				System.out.println(authentication.getName());
 
 				//System.out.println(userProfile);

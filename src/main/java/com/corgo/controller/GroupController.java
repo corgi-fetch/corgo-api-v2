@@ -1,12 +1,20 @@
 package com.corgo.controller;
 
 import java.security.Principal;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,10 +23,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import com.corgo.DTO.GroupDTO;
 import com.corgo.DTO.PostDTO;
+import com.corgo.DTO.PushMessage;
+import com.corgo.DTO.PushTickets;
 import com.corgo.DTO.UserDTO;
+import com.corgo.model.PushToken;
 import com.corgo.service.*;
 
 @RestController
@@ -36,6 +48,8 @@ public class GroupController {
 	GroupDTO create(@PathVariable("userId") String userId, @RequestBody @Valid GroupDTO groupEntry) {
 		System.out.println("in group create controller");
 		GroupDTO created = groupService.create(groupEntry);
+		
+
 		return created;
 	}
 	

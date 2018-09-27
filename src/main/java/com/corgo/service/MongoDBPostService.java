@@ -151,7 +151,7 @@ final class MongoDBPostService implements PostService{
 	}
 
 	private Post FindPostById(String id) {
-		Optional<Post> result = postRepository.findOne(id);
+		Optional<Post> result = postRepository.findById(id);
 		//TODO: IMPLEMENT EXCEPTION AND ERROR HANDLING
 		return result.get();
 	}

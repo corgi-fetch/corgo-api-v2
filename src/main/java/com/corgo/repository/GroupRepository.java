@@ -11,6 +11,6 @@ public interface GroupRepository extends Repository<Group, String> {
 	List<Group> findByUsersUserId(String userId);
 	void delete(Group deleted);
     List<Group> findAll();
-    Optional<Group> findOne(String id);
+    Optional<Group> findById(String id);
     Group save(Group saved);
 }

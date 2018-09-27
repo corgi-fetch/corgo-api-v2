@@ -4,6 +4,7 @@ public class UserStub {
 	private String userId;
     private int rating;
     private String name;
+    private String pushToken;
     
     public String getUserId() {
 		return userId;
@@ -22,5 +23,11 @@ public class UserStub {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getPushToken() {
+		return pushToken;
+	}
+	public void setPushToken(String pushToken) {
+		this.pushToken = pushToken;
 	}
 }

@@ -11,7 +11,7 @@ public interface UserRepository extends Repository<User, String> {
     
     void delete(User deleted);
     List<User> findAll();
-    Optional<User> findOne(String id);
+    Optional<User> findById(String id);
     User save(User saved);
     Optional<User> findByUserId(String userId);
 

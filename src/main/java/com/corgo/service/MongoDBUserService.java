@@ -85,9 +85,14 @@ public class MongoDBUserService implements UserService{
 	public UserDTO update(UserDTO user) {
 		User updated = FindUserById(user.getUserId());
 		
-		updated.setUserId(user.getUserId());
 		
-		updated.setRating(user.getRating());
+		if (user.getUserId() != null) {
+			updated.setUserId(user.getUserId());
+		}
+		
+		if (user.getRating() != 0) {
+			updated.setRating(user.getRating());
+		}
 		updated.setName(user.getName());
 		updated.setEmail(user.getEmail());
 		
@@ -99,9 +104,10 @@ public class MongoDBUserService implements UserService{
 		updated.setBankAccount(user.getBankAccount());
 		
 		updated.setGroups(groupTransformer.ConvertListOfGroupStubDTOToGroupStub(user.getGroups()));
-		
-		updated.setPushToken(user.getPushToken());
-		
+		if (user.getPushToken() != null) {
+			updated.setPushToken(user.getPushToken());
+		}
+		System.out.println("We are in update " + user.getPushToken());
 		updated.update(updated);
 		updated = userRepository.save(updated);
 		return userTransformer.ConvertUserToUserDTO(updated);

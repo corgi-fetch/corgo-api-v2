@@ -88,6 +88,7 @@ final class UserTransformerImpl implements UserTransformer {
 		dto.setUserId(model.getUserId());
 		dto.setName(model.getName());
 		dto.setRating(model.getRating());
+		dto.setPushToken(model.getPushToken());
 		return dto;
 	}
 	
@@ -96,6 +97,7 @@ final class UserTransformerImpl implements UserTransformer {
 		dto.setUserId(userDTO.getUserId());
 		dto.setName(userDTO.getName());
 		dto.setRating(userDTO.getRating());
+		dto.setPushToken(userDTO.getPushToken());
 		return dto;
 	}
 	
@@ -150,6 +152,7 @@ final class UserTransformerImpl implements UserTransformer {
 		toReturn.setName(stub.getName());
 		toReturn.setRating(stub.getRating());
 		toReturn.setUserId(stub.getUserId());
+		toReturn.setPushToken(stub.getPushToken());
 		return toReturn;
 	}
 
@@ -170,6 +173,7 @@ final class UserTransformerImpl implements UserTransformer {
 		toReturn.setName(stubDTO.getName());
 		toReturn.setRating(stubDTO.getRating());
 		toReturn.setUserId(stubDTO.getUserId());
+		toReturn.setPushToken(stubDTO.getPushToken());
 		return toReturn;
 	}
 

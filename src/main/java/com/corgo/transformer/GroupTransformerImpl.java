@@ -63,7 +63,7 @@ public class GroupTransformerImpl implements GroupTransformer {
 	}
 	
 	public Group ConvertGroupDTOToGroup(GroupDTO model) { 
-		Group toReturn = groupRepository.findOne(model.getId()).get();
+		Group toReturn = groupRepository.findById(model.getId()).get();
 		toReturn.setInvited(model.getInvited());
 		toReturn.setDescription(model.getDescription());
 		toReturn.setTitle(model.getTitle());

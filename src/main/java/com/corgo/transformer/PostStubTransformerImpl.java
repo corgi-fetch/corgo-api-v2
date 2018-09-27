@@ -72,7 +72,7 @@ public class PostStubTransformerImpl implements PostStubTransformer {
 	public Post ConvertPostStubDTOToPost(PostStubDTO dto) {
 		Post toReturn;
 		if (dto != null && dto.getId() != null) {
-			toReturn = postRepository.findOne(dto.getId()).get();
+			toReturn = postRepository.findById(dto.getId()).get();
 		} else {
 			toReturn = null;
 		}

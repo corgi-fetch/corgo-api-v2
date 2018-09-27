@@ -50,7 +50,7 @@ final class PostTransformerImpl implements PostTransformer{
 		
 		Post toReturn;
 		if (postDTO.getId() != null) {
-			toReturn = postRepository.findOne(postDTO.getId()).get();
+			toReturn = postRepository.findById(postDTO.getId()).get();
 		} else {
 			toReturn = new Post().getBuilder(postDTO.getDate(), userTransformer.ConvertUserStubDTOToUserStub(postDTO.getOwner()), postDTO.getTitle(), 
 					postDTO.getDescription(), postDTO.getPayment(), postDTO.getGroupId(), postDTO.getState()).
