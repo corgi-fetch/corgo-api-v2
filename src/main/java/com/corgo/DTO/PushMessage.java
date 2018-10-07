@@ -21,6 +21,10 @@ public class PushMessage {
 	int badge;
 	
 	String channelId;
+	
+	public PushMessage() {
+		this.priority = "high";
+	}
 
 	public String getTo() {
 		return to;

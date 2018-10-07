@@ -20,8 +20,8 @@ public class Post {
 	private boolean serviceReceived;
 	
     private int state;
-    private String selectedUserId;
-	private String responderUserId;
+    private UserStub selectedUserId;
+	private UserStub responderUserId;
 
 	private Post(Builder builder) {
 		this.date = builder.date;
@@ -92,11 +92,11 @@ public class Post {
 		return this.state;
 	}
 	
-	public String getSelectedUserId() {
+	public UserStub getSelectedUserId() {
 		return this.selectedUserId;
 	}
 	
-	public String getResponderUserId() {
+	public UserStub getResponderUserId() {
 		return this.responderUserId;
 	}
 
@@ -135,8 +135,8 @@ public class Post {
 		
 		private int state;
 		
-		private String selectedUserId;
-		private String responderUserId;
+		private UserStub selectedUserId;
+		private UserStub responderUserId;
 
 		public Builder(int date, UserStub owner, String title, String description, double payment, String groupId, int state) {
 			this.date = date;
@@ -154,9 +154,9 @@ public class Post {
 			{ this.serviceGiven = _serviceGiven; return this; }
 		public Builder serviceReceived(boolean _serviceReceived)
 			{ this.serviceReceived = _serviceReceived; return this; }
-		public Builder selectedUserId(String _selectedUserId)
+		public Builder selectedUserId(UserStub _selectedUserId)
 			{ this.selectedUserId = _selectedUserId; return this; }
-		public Builder responderUserId(String _responderUserId)
+		public Builder responderUserId(UserStub _responderUserId)
 			{ this.responderUserId = _responderUserId; return this; }
 		
 		public Post build() {

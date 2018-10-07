@@ -5,6 +5,7 @@ public class UserStubDTO {
     private int rating;
     private String name;
     private String pushToken;
+    private String bankAccount;
     
     public String getUserId() {
 		return userId;
@@ -31,6 +32,12 @@ public class UserStubDTO {
 		this.pushToken = pushToken;
 	}
 	
+	public String getBankAccount() {
+		return bankAccount;
+	}
+	public void setBankAccount(String bankAccount) {
+		this.bankAccount = bankAccount;
+	}
 	@Override 
 	public boolean equals(Object obj) {
 		if(!(obj instanceof UserStubDTO)) {

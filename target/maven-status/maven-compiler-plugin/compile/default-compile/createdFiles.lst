@@ -1,16 +1,18 @@
 com\corgo\transformer\UserTransformer.class
 com\corgo\model\Post$Builder.class
 com\corgo\repository\UserRepository.class
+com\corgo\model\PushToken.class
 com\corgo\model\GroupStub.class
 com\corgo\App.class
 com\corgo\service\PostService.class
 com\corgo\DTO\GroupStubDTO.class
+com\corgo\authentication\SimpleAuthenticationFilter.class
 com\corgo\authentication\CustomAuthenticationSuccessHandler.class
-com\corgo\authentication\AuthenticationListener.class
 com\corgo\DTO\UserDTO.class
 com\corgo\controller\LoginController.class
 com\corgo\controller\PrincipleController.class
 com\corgo\controller\UserController.class
+com\corgo\authentication\SimpleUserDetailsService.class
 com\corgo\DTO\RegistrationFormDTO.class
 com\corgo\DTO\PushMessage.class
 com\corgo\transformer\PostTransformerImpl.class
@@ -49,6 +51,7 @@ com\corgo\model\User.class
 com\corgo\controller\OtherUserController.class
 com\corgo\controller\NewUserController.class
 com\corgo\service\MongoDBPostService.class
+com\corgo\DTO\PushTickets.class
 com\corgo\transformer\GroupTransformer.class
 com\corgo\transformer\PostStubTransformer.class
 com\corgo\authentication\SecurityConfig.class

@@ -19,8 +19,8 @@ public class PostDTO {
 	private boolean serviceReceived;
 	
 	private int state;
-	public String selectedUserId;
-	public String responderUserId;
+	public UserStubDTO selectedUserId;
+	public UserStubDTO responderUserId;
 	
 	public int getState() {
 		return state;
@@ -93,19 +93,19 @@ public class PostDTO {
 		this.serviceReceived = serviceReceived;
 	}
 	
-	public void setSelectedUserId(String selectedUserId) {
+	public void setSelectedUserId(UserStubDTO selectedUserId) {
 		this.selectedUserId = selectedUserId;
 	}
 	
-	public String getSelectedUserId() {
+	public UserStubDTO getSelectedUserId() {
 		return selectedUserId;
 	}
 	
-	public void setResponderUserId(String responderUserId) {
+	public void setResponderUserId(UserStubDTO responderUserId) {
 		this.responderUserId = responderUserId;
 	}
 	
-	public String getResponderUserId() {
+	public UserStubDTO getResponderUserId() {
 		return responderUserId;
 	}
 }

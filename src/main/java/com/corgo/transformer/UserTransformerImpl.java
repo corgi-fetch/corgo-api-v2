@@ -84,21 +84,31 @@ final class UserTransformerImpl implements UserTransformer {
 	
 	public UserStubDTO ConvertUserToUserStubDTO(User model)
 	{
-		UserStubDTO dto = new UserStubDTO();
-		dto.setUserId(model.getUserId());
-		dto.setName(model.getName());
-		dto.setRating(model.getRating());
-		dto.setPushToken(model.getPushToken());
-		return dto;
+		if (model != null) { 
+			UserStubDTO dto = new UserStubDTO();
+			dto.setUserId(model.getUserId());
+			dto.setName(model.getName());
+			dto.setRating(model.getRating());
+			dto.setPushToken(model.getPushToken());
+			dto.setBankAccount(model.getBankAccount());
+			return dto;
+		} else {
+			return null;
+		}
 	}
 	
 	public UserStubDTO ConvertUserDTOToUserStubDTO(UserDTO userDTO) {
-		UserStubDTO dto = new UserStubDTO();
-		dto.setUserId(userDTO.getUserId());
-		dto.setName(userDTO.getName());
-		dto.setRating(userDTO.getRating());
-		dto.setPushToken(userDTO.getPushToken());
-		return dto;
+		if (userDTO != null) {
+			UserStubDTO dto = new UserStubDTO();
+			dto.setUserId(userDTO.getUserId());
+			dto.setName(userDTO.getName());
+			dto.setRating(userDTO.getRating());
+			dto.setPushToken(userDTO.getPushToken());
+			dto.setBankAccount(userDTO.getBankAccount());
+			return dto;
+		} else {
+			return null;
+		}
 	}
 	
 	public User ConvertUserStubDTOToUser(UserStubDTO userStubDTO)
@@ -148,12 +158,17 @@ final class UserTransformerImpl implements UserTransformer {
 	
 	@Override
 	public UserStubDTO ConvertUserStubToUserStubDTO(UserStub stub) {
-		UserStubDTO toReturn = new UserStubDTO();
-		toReturn.setName(stub.getName());
-		toReturn.setRating(stub.getRating());
-		toReturn.setUserId(stub.getUserId());
-		toReturn.setPushToken(stub.getPushToken());
-		return toReturn;
+		if (stub != null) {
+			UserStubDTO toReturn = new UserStubDTO();
+			toReturn.setName(stub.getName());
+			toReturn.setRating(stub.getRating());
+			toReturn.setUserId(stub.getUserId());
+			toReturn.setPushToken(stub.getPushToken());
+			toReturn.setBankAccount(stub.getBankAccount());
+			return toReturn;
+		} else {
+			return null;
+		}
 	}
 
 	@Override
@@ -169,12 +184,17 @@ final class UserTransformerImpl implements UserTransformer {
 	
 	@Override
 	public UserStub ConvertUserStubDTOToUserStub(UserStubDTO stubDTO) {
-		UserStub toReturn = new UserStub();
-		toReturn.setName(stubDTO.getName());
-		toReturn.setRating(stubDTO.getRating());
-		toReturn.setUserId(stubDTO.getUserId());
-		toReturn.setPushToken(stubDTO.getPushToken());
-		return toReturn;
+		if (stubDTO != null) { 
+			UserStub toReturn = new UserStub();
+			toReturn.setName(stubDTO.getName());
+			toReturn.setRating(stubDTO.getRating());
+			toReturn.setUserId(stubDTO.getUserId());
+			toReturn.setPushToken(stubDTO.getPushToken());
+			toReturn.setBankAccount(stubDTO.getBankAccount());
+			return toReturn;
+		} else {
+			return null;
+		}
 	}
 
 }

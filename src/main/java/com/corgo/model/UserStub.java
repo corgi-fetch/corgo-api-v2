@@ -5,6 +5,7 @@ public class UserStub {
     private int rating;
     private String name;
     private String pushToken;
+    private String bankAccount;
     
     public String getUserId() {
 		return userId;
@@ -29,5 +30,11 @@ public class UserStub {
 	}
 	public void setPushToken(String pushToken) {
 		this.pushToken = pushToken;
+	}
+	public String getBankAccount() {
+		return bankAccount;
+	}
+	public void setBankAccount(String bankAccount) {
+		this.bankAccount = bankAccount;
 	}
 }

@@ -3,7 +3,9 @@ C:\repos\corgo-api-v2\src\main\java\com\corgo\service\ServiceBase.java
 C:\repos\corgo-api-v2\src\main\java\com\corgo\model\Post.java
 C:\repos\corgo-api-v2\src\main\java\com\corgo\service\MongoDBUserService.java
 C:\repos\corgo-api-v2\src\main\java\com\corgo\transformer\PostTransformer.java
+C:\repos\corgo-api-v2\src\main\java\com\corgo\DTO\PushTickets.java
 C:\repos\corgo-api-v2\src\main\java\com\corgo\service\MongoDBPostService.java
+C:\repos\corgo-api-v2\src\main\java\com\corgo\authentication\SimpleAuthenticationFilter.java
 C:\repos\corgo-api-v2\src\main\java\com\corgo\repository\UserRepository.java
 C:\repos\corgo-api-v2\src\main\java\com\corgo\controller\PrincipleController.java
 C:\repos\corgo-api-v2\src\main\java\com\corgo\model\PostStub.java
@@ -49,5 +51,7 @@ C:\repos\corgo-api-v2\src\main\java\com\corgo\repository\PostRepository.java
 C:\repos\corgo-api-v2\src\main\java\com\corgo\service\GroupService.java
 C:\repos\corgo-api-v2\src\main\java\com\corgo\authentication\AuthorizationServerConfiguration.java
 C:\repos\corgo-api-v2\src\main\java\com\corgo\DTO\PostStubDTO.java
+C:\repos\corgo-api-v2\src\main\java\com\corgo\model\PushToken.java
 C:\repos\corgo-api-v2\src\main\java\com\corgo\DTO\UserDTO.java
 C:\repos\corgo-api-v2\src\main\java\com\corgo\controller\NewUserController.java
+C:\repos\corgo-api-v2\src\main\java\com\corgo\authentication\SimpleUserDetailsService.java

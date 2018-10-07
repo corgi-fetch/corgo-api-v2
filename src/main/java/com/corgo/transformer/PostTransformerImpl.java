@@ -55,8 +55,8 @@ final class PostTransformerImpl implements PostTransformer{
 			toReturn = new Post().getBuilder(postDTO.getDate(), userTransformer.ConvertUserStubDTOToUserStub(postDTO.getOwner()), postDTO.getTitle(), 
 					postDTO.getDescription(), postDTO.getPayment(), postDTO.getGroupId(), postDTO.getState()).
 					interestedQueue(userTransformer.ConvertListOfUserStubDTOToUserStubs(postDTO.getInterestedQueue()))
-					.responderUserId(postDTO.getResponderUserId())
-					.selectedUserId(postDTO.getSelectedUserId())
+					.responderUserId(userTransformer.ConvertUserStubDTOToUserStub(postDTO.getResponderUserId()))
+					.selectedUserId(userTransformer.ConvertUserStubDTOToUserStub(postDTO.getSelectedUserId()))
 					.serviceGiven(postDTO.isServiceGiven())
 					.serviceReceived(postDTO.isServiceReceived()).build();
 		}
@@ -80,8 +80,8 @@ final class PostTransformerImpl implements PostTransformer{
 	        dto.setServiceGiven(model.getServiceGiven());
 	        dto.setServiceReceived(model.getServiceReceived());
 	        dto.setGroupId(model.getGroupId());
-	        dto.setSelectedUserId(model.getSelectedUserId());
-	        dto.setResponderUserId(model.getResponderUserId());
+	        dto.setSelectedUserId(userTransformer.ConvertUserStubToUserStubDTO(model.getSelectedUserId()));
+	        dto.setResponderUserId(userTransformer.ConvertUserStubToUserStubDTO(model.getResponderUserId()));
 	        dto.setState(model.getState());
 	        return dto;
 		} else {

@@ -124,7 +124,7 @@ public class MongoDBGroupService implements GroupService {
 			e.printStackTrace();
 		}
 		
-		System.out.println("msgJsonList " + msgJsonList);
+		System.out.println("in group creation msgJsonList " + msgJsonList);
 		
 		HttpEntity<String> httpEntity = new HttpEntity<String>(msgJsonList, headers);
 		PushTickets tickets = restTemplate.postForEntity(url, httpEntity, PushTickets.class).getBody();

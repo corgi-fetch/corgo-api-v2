@@ -2,7 +2,10 @@ package com.corgo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,15 +15,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.corgo.service.*;
 import com.corgo.transformer.UserTransformer;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.corgo.DTO.*;
 
 @RestController
@@ -67,6 +75,8 @@ public class PostController {
 //		return postService.update(postEntry);
 //	}
 	
+	
+	//Adding to Interested Queue
 	@RequestMapping(value = "{id}", method = RequestMethod.PUT)
 	PostDTO addInterestedQueue(@PathVariable("userId") String userId, @PathVariable("id") String id, @RequestBody @Valid UserStubDTO interestedUser) {
 		System.out.println("we r here");
@@ -81,18 +91,87 @@ public class PostController {
 		interestedQueue.add(interestedUser);
 		post.setInterestedQueue(interestedQueue);
 		System.out.println(post.getInterestedQueue().size());
+		
+		// Push notification!
+		String url = "https://exp.host/--/api/v2/push/send";
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+
+		RestTemplate restTemplate = new RestTemplate();
+		List<PushMessage> listMsg = new ArrayList<>();
+		
+		
+		PushMessage msg = new PushMessage();
+		
+		msg.setTo(post.getOwner().getPushToken());
+		msg.setTitle(interestedUser.getName() + " marked themselves as interested for your post " + post.getTitle());
+		msg.setBody("Feel free to accept them as requester!");
+		msg.setChannelId("corgo-notifications");
+		listMsg.add(msg);
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.setSerializationInclusion(Include.NON_NULL);
+		objectMapper.setSerializationInclusion(Include.NON_EMPTY); 
+		String msgJsonList = "";
+		try {
+			msgJsonList = objectMapper.writeValueAsString(listMsg);
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println("msgJsonList " + msgJsonList);
+		
+		HttpEntity<String> httpEntity = new HttpEntity<String>(msgJsonList, headers);
+		PushTickets tickets = restTemplate.postForEntity(url, httpEntity, PushTickets.class).getBody();
+		
 		return postService.update(post, false);
 	}
 	
+	
+	// Selecting Interested User!
 	@RequestMapping(value = "{id}", method = RequestMethod.POST)
 	PostDTO selectUser(@PathVariable("userId") String userId, @PathVariable("id") String id, @RequestBody @Valid UserStubDTO interestedUser) {
 		System.out.println("we r here");
 		PostDTO post = postService.findById(id);
-		post.setResponderUserId(interestedUser.getUserId());
+		post.setResponderUserId(interestedUser);
 		post.setInterestedQueue(new ArrayList<>());
 		post.setState(2);
 		
+		// Push notification!
+		String url = "https://exp.host/--/api/v2/push/send";
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+
+		RestTemplate restTemplate = new RestTemplate();
+		List<PushMessage> listMsg = new ArrayList<>();
 		
+		
+		PushMessage msg = new PushMessage();
+		
+		msg.setTo(interestedUser.getPushToken());
+		msg.setTitle("Yay! " + post.getOwner().getName() + " selected you for their post " + post.getTitle());
+		msg.setBody("Thanks for being willing to help " + post.getOwner().getName() + " out!");
+		msg.setChannelId("corgo-notifications");
+		listMsg.add(msg);
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.setSerializationInclusion(Include.NON_NULL);
+		objectMapper.setSerializationInclusion(Include.NON_EMPTY); 
+		String msgJsonList = "";
+		try {
+			msgJsonList = objectMapper.writeValueAsString(listMsg);
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println("msgJsonList " + msgJsonList);
+		
+		HttpEntity<String> httpEntity = new HttpEntity<String>(msgJsonList, headers);
+		PushTickets tickets = restTemplate.postForEntity(url, httpEntity, PushTickets.class).getBody();
+				
+				
 //		System.out.println(post.getInterestedQueue().size());
 		return postService.update(post, false);
 	}
@@ -118,6 +197,42 @@ public class PostController {
 		System.out.println("after remove" + interestedQueue.size());
 		post.setInterestedQueue(interestedQueue);
 		System.out.println(post.getInterestedQueue().size());
+		
+		
+		// Push notification!
+		String url = "https://exp.host/--/api/v2/push/send";
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+
+		RestTemplate restTemplate = new RestTemplate();
+		List<PushMessage> listMsg = new ArrayList<>();
+		
+		
+		PushMessage msg = new PushMessage();
+		
+		msg.setTo(post.getOwner().getPushToken());
+		msg.setTitle(interestedUser.getName() + " removed themselves as interested for your post " + post.getTitle());
+		msg.setBody("Don't worry, there's more fish in the sea!");
+		msg.setChannelId("corgo-notifications");
+		msg.setPriority("high");
+		listMsg.add(msg);
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.setSerializationInclusion(Include.NON_NULL);
+		objectMapper.setSerializationInclusion(Include.NON_EMPTY); 
+		String msgJsonList = "";
+		try {
+			msgJsonList = objectMapper.writeValueAsString(listMsg);
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println("msgJsonList " + msgJsonList);
+		
+		HttpEntity<String> httpEntity = new HttpEntity<String>(msgJsonList, headers);
+		PushTickets tickets = restTemplate.postForEntity(url, httpEntity, PushTickets.class).getBody();
+		
 		return postService.update(post, false);
 	}
 }
