@@ -65,7 +65,7 @@ public class PostController {
 	
 	@RequestMapping(method = RequestMethod.GET)
 	List<PostStubDTO> findAll(@PathVariable("userId") String userId, @ModelAttribute Principal principal) {
-		System.out.println(principal.getName());
+//		System.out.println(principal.getName());
 		return postService.findAll();
 	}
 	

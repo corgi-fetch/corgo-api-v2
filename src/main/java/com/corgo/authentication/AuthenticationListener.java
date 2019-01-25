@@ -13,9 +13,9 @@
 //import org.springframework.stereotype.Component;
 //import org.springframework.web.bind.annotation.ModelAttribute;
 //import javax.persistence.*;
-//
+////
 //import com.corgo.service.UserService;
-
+//
 //@Component
 //public class AuthenticationListener implements ApplicationListener<InteractiveAuthenticationSuccessEvent> {
 //	

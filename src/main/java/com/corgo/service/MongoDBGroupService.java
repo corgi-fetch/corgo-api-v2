@@ -221,7 +221,7 @@ public class MongoDBGroupService implements GroupService {
 	}
 
 	@Override
-	public List<GroupDTO> findAll() {
+	public List<GroupDTO> findAll(String userId) {
 		// TODO Auto-generated method stub
 		List<Group> listDTO = groupRepository.findAll();
 		System.out.println("we are in group find all " + listDTO);

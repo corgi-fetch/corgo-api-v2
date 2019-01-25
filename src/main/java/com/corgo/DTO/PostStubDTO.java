@@ -76,5 +76,17 @@ public class PostStubDTO {
 	public void setState(int state) {
 		this.state = state;
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		System.out.println("WE ARE IN EQUALS");
+		PostStubDTO toCompare = (PostStubDTO) o;
+		
+		if (this.id.equals(toCompare.id)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 }
